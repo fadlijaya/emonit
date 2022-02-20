@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "554139881759",
+    "project_id": "emonit-38528",
+    "storage_bucket": "emonit-38528.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554139881759:android:e3b524f70156a77bd6e02a",
+        "android_client_info": {
+          "package_name": "com.example.emonit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554139881759-c7lpcjtcblj48et25uu5bl94pgvimn4k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJUk7LrV9HFO7im4pKMjB-8Aw_POhZEWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554139881759-c7lpcjtcblj48et25uu5bl94pgvimn4k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
