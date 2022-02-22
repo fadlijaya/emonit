@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emonit/admin/drawer/kunjungan_page.dart';
+import 'package:emonit/admin/drawer/penolakan_page.dart';
 import 'package:emonit/admin/drawer/petugas_page.dart';
+import 'package:emonit/admin/drawer/terverifikasi_page.dart';
 import 'package:emonit/theme/colors.dart';
 import 'package:emonit/utils/constant.dart';
-import 'package:emonit/views/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +14,11 @@ final Stream<QuerySnapshot> _streamPetugas =
 final Stream<QuerySnapshot> _streamKunjungan =
     FirebaseFirestore.instance.collection("kunjungan").snapshots();
 
-final Stream<QuerySnapshot> _streamVerifikasi =
-    FirebaseFirestore.instance.collection("kunjungan").snapshots();
+final Stream<QuerySnapshot> _streamTerverifikasi =
+    FirebaseFirestore.instance.collection("terverifikasi").snapshots();
+
+final Stream<QuerySnapshot> _streamPenolakan =
+    FirebaseFirestore.instance.collection("penolakan").snapshots();
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -69,10 +73,25 @@ class _DashboardPageState extends State<DashboardPage> {
                 style: TextStyle(color: kBlack54),
               ),
             ),
-            const ListTile(
-              leading: Icon(Icons.verified),
-              title: Text(
-                "Verifikasi",
+            ListTile(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const VerifikasiPage())),
+              leading: const Icon(Icons.verified),
+              title: const Text(
+                "Data Terverifikasi",
+                style: TextStyle(color: kBlack54),
+              ),
+            ),
+             ListTile(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const PenolakanPage())),
+              leading: const Icon(Icons.close),
+              title: const Text(
+                "Data Penolakan",
                 style: TextStyle(color: kBlack54),
               ),
             ),
@@ -96,7 +115,7 @@ class _DashboardPageState extends State<DashboardPage> {
         padding: const EdgeInsets.all(8),
         child: GridView.count(
           crossAxisCount: 2,
-          children: [cardPetugas(), cardKunjungan(), cardVerifikasi()],
+          children: [cardPetugas(), cardKunjungan(), cardTerverifikasi(), cardPenolakan()],
         ),
       ),
     );
@@ -147,7 +166,6 @@ class _DashboardPageState extends State<DashboardPage> {
                         child: Icon(
                           Icons.account_circle,
                           size: 48.0,
-                          
                         ),
                       ),
                     ],
@@ -155,17 +173,14 @@ class _DashboardPageState extends State<DashboardPage> {
                   Text(
                     "${int.parse(totalData.toString())}",
                     style: const TextStyle(
-                       
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold),
+                        fontSize: 24.0, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
                     height: 8,
                   ),
                   const Text('Petugas',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold))
+                      style: TextStyle(fontWeight: FontWeight.bold))
                 ],
               ),
             );
@@ -205,9 +220,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   Text(
                     "${int.parse(totalData.toString())}", //dashboardModel.totalProduct.toString(),
                     style: const TextStyle(
-                        
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold),
+                        fontSize: 24.0, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
@@ -215,8 +228,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                   const Text(
                     'Kunjungan',
-                    style: TextStyle(
-                         fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 ],
               ),
@@ -225,50 +237,102 @@ class _DashboardPageState extends State<DashboardPage> {
         });
   }
 
-  Widget cardVerifikasi() {
+  Widget cardTerverifikasi() {
     return StreamBuilder<QuerySnapshot>(
-      stream: _streamVerifikasi,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(),);
-        } else if (snapshot.hasError) {
-          return const Center(child: Text("Error!"),);
-        }
-        return Card(
-          elevation: 10.0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          child: Column(
-            children: [
-              Row(
-                children: const [
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: paddingDefault, left: paddingDefault),
-                    child: Icon(Icons.verified,
-                        size: 48.0, color: kGreen),
+        stream: _streamTerverifikasi,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return const Center(
+              child: Text("Error!"),
+            );
+          } else {
+            int totalData = snapshot.data!.docs.length;
+            return Card(
+              elevation: 10.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0)),
+              child: Column(
+                children: [
+                  Row(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: paddingDefault, left: paddingDefault),
+                        child: Icon(Icons.verified, size: 48.0, color: kGreen),
+                      ),
+                    ],
                   ),
+                  Text(
+                    "${int.parse(totalData.toString())}",
+                    style:
+                        const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  const Text(
+                    'Terverifikasi',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )
                 ],
               ),
-              const Text(
-                "", 
-                style: TextStyle(
-                    
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+            );
+          }
+        });
+  }
+
+   Widget cardPenolakan() {
+    return StreamBuilder<QuerySnapshot>(
+        stream: _streamPenolakan,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return const Center(
+              child: Text("Error!"),
+            );
+          } else {
+            int totalData = snapshot.data!.docs.length;
+            return Card(
+              elevation: 10.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0)),
+              child: Column(
+                children: [
+                  Row(
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: paddingDefault, left: paddingDefault),
+                        child: Icon(Icons.close, size: 48.0, color: kRed),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "${int.parse(totalData.toString())}",
+                    style:
+                        const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  const Text(
+                    'Penolakan',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )
+                ],
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              const Text(
-                'Verifikasi',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-        );
-      }
-    );
+            );
+          }
+        });
   }
 
   Future getAdmin() async {

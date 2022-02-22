@@ -3,6 +3,7 @@ import 'package:emonit/admin/drawer/petugas_page.dart';
 import 'package:emonit/theme/colors.dart';
 import 'package:emonit/utils/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 final Stream<QuerySnapshot> _streamKunjungan =
     FirebaseFirestore.instance.collection("kunjungan").snapshots();
@@ -54,20 +55,22 @@ class _KunjunganPageState extends State<KunjunganPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => DetailKunjunganPage(
-                                uid: data['uid'],
-                                tanggalKunjungan: data['tanggal kunjungan'],
-                                nomorHp: data['nomor HP'],
-                                namaMB: data['nama mitra binaan'],
-                                namaLokasi: data['nama lokasi'],
-                                koordinatLokasi: data['koordinat lokasi'],
-                                kodeMB: data['kode mitra binaan'],
-                                keterangan: data['keterangan'],
-                                fileFoto: data['file foto'],
-                                alamat: data['alamat'],
-                              ))),
+                              docId: data['docId'],
+                              uid: data['uid'],
+                              tanggalKunjungan: data['tanggal kunjungan'],
+                              nomorHp: data['nomor HP'],
+                              namaMB: data['nama mitra binaan'],
+                              namaLokasi: data['nama lokasi'],
+                              koordinatLokasi: data['koordinat lokasi'],
+                              kodeMB: data['kode mitra binaan'],
+                              keterangan: data['keterangan'],
+                              fileFoto: data['file foto'],
+                              alamat: data['alamat'],
+                              statusVerifikasi: data['status verifikasi']))),
                   title: Text(
                     "${data['kode mitra binaan']}",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        color: kBlack54, fontWeight: FontWeight.bold),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,6 +88,15 @@ class _KunjunganPageState extends State<KunjunganPage> {
                           ),
                         ],
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${data['status verifikasi']}",
+                            style: const TextStyle(fontSize: 12, color: kBlue),
+                          ),
+                        ],
+                      ),
                       const Divider(
                         thickness: 2,
                       )
@@ -99,6 +111,7 @@ class _KunjunganPageState extends State<KunjunganPage> {
 }
 
 class DetailKunjunganPage extends StatefulWidget {
+  final String docId;
   final String uid;
   final String tanggalKunjungan;
   final String nomorHp;
@@ -109,8 +122,10 @@ class DetailKunjunganPage extends StatefulWidget {
   final String keterangan;
   final String fileFoto;
   final String alamat;
+  final String statusVerifikasi;
   const DetailKunjunganPage(
       {Key? key,
+      required this.docId,
       required this.uid,
       required this.tanggalKunjungan,
       required this.nomorHp,
@@ -120,7 +135,8 @@ class DetailKunjunganPage extends StatefulWidget {
       required this.kodeMB,
       required this.keterangan,
       required this.fileFoto,
-      required this.alamat})
+      required this.alamat,
+      required this.statusVerifikasi})
       : super(key: key);
 
   @override
@@ -141,6 +157,13 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
   String? _religion;
   String? _placeBirth;
   String? _address;
+
+  String statusVerifikasi1 = "Terverifikasi";
+  String statusVerifikasi2 = "Tidak Terverifikasi";
+
+  String tglVerifikasi = DateFormat('dd-mm-yyyy kk:mm').format(DateTime.now());
+
+  bool isVisible = false;
 
   Future getUser() async {
     await FirebaseFirestore.instance
@@ -176,7 +199,7 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
 
   @override
   Widget build(BuildContext context) {
-    String title = "Detail Kunjungan";
+    String title = "Detail Data Kunjungan";
 
     return Scaffold(
       appBar: AppBar(
@@ -210,14 +233,12 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
                       child: Text(
                     "$_fullname",
                     style: const TextStyle(
-                        color: kBlack54,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold),
+                        color: kBlack54, fontWeight: FontWeight.bold),
                   ))
                 ],
               ),
               const SizedBox(
-                height: 12,
+                height: 4,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -252,6 +273,19 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
               const SizedBox(
                 height: 12,
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "ID Kunjungan",
+                    style: TextStyle(color: kBlack54),
+                  ),
+                  Text(widget.docId)
+                ],
+              ),
+              const SizedBox(
+                height: 12,
+              ),
               const Center(
                   child: Text(
                 "Mitra Binaan",
@@ -270,7 +304,9 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
               Text(
                 widget.kodeMB,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -285,7 +321,9 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
               Text(
                 widget.namaMB,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -300,7 +338,9 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
               Text(
                 widget.namaLokasi,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -315,7 +355,9 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
               Text(
                 "Lat: ${widget.koordinatLokasi.latitude}, Lon: ${widget.koordinatLokasi.longitude}",
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -330,7 +372,9 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
               Text(
                 widget.tanggalKunjungan,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -345,7 +389,9 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
               Text(
                 widget.alamat,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -360,7 +406,9 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
               Text(
                 widget.nomorHp,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -375,7 +423,7 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
               Text(
                 widget.keterangan,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold),
               ),
               const SizedBox(
                 height: 12,
@@ -398,7 +446,27 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
               const SizedBox(
                 height: 24,
               ),
-              buttonValidasi()
+              widget.statusVerifikasi == ""
+                  ? Column(
+                      children: [
+                        buttonValid(),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        buttonInvalid()
+                      ],
+                    )
+                  : Visibility(
+                      visible: isVisible,
+                      child: Column(
+                        children: [
+                          buttonValid(),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          buttonInvalid()
+                        ],
+                      ))
             ],
           ),
         ),
@@ -406,46 +474,148 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
     );
   }
 
-  Widget buttonValidasi() {
-    return Column(
-      children: [
-        ElevatedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(kGreen),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)))),
-            child: Container(
-                width: double.infinity,
-                height: 48,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: const Center(
-                  child: Text(
-                    "Valid",
-                    style: TextStyle(color: kWhite),
-                  ),
-                ))),
-        const SizedBox(
-          height: 8,
-        ),
-        ElevatedButton(
-            onPressed: () {},
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(kWhite),
-                side: MaterialStateProperty.all(const BorderSide(color: kRed)),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)))),
-            child: Container(
-                width: double.infinity,
-                height: 48,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: const Center(
-                  child: Text(
-                    "Invalid",
-                    style: TextStyle(color: kRed),
-                  ),
-                )))
-      ],
-    );
+  Widget buttonValid() {
+    return ElevatedButton(
+        onPressed: terverifikasi,
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(kGreen),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8)))),
+        child: Container(
+            width: double.infinity,
+            height: 48,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: const Center(
+              child: Text(
+                "Valid",
+                style: TextStyle(color: kWhite),
+              ),
+            )));
+  }
+
+  Widget buttonInvalid() {
+    return ElevatedButton(
+        onPressed: penolakan,
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(kWhite),
+            side: MaterialStateProperty.all(const BorderSide(color: kRed)),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8)))),
+        child: Container(
+            width: double.infinity,
+            height: 48,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: const Center(
+              child: Text(
+                "Invalid",
+                style: TextStyle(color: kRed),
+              ),
+            )));
+  }
+
+  Future<dynamic> updateStatusTerverifikasi() async {
+    DocumentReference docRefKunjungan =
+        FirebaseFirestore.instance.collection("kunjungan").doc(widget.docId);
+
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot docSnap = await transaction.get(docRefKunjungan);
+      if (docSnap.exists) {
+        transaction.update(docRefKunjungan,
+            <String, dynamic>{'status verifikasi': statusVerifikasi1});
+      }
+    });
+
+    DocumentReference docRefUsersKunjungan = FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget.uid)
+        .collection("kunjungan")
+        .doc(widget.docId);
+
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot docSnap = await transaction.get(docRefUsersKunjungan);
+      if (docSnap.exists) {
+        transaction.update(docRefUsersKunjungan,
+            <String, dynamic>{'status verifikasi': statusVerifikasi1});
+      }
+    });
+  }
+
+  Future<dynamic> updateStatusPenolakan() async {
+    DocumentReference docRefKunjungan =
+        FirebaseFirestore.instance.collection("kunjungan").doc(widget.docId);
+
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot docSnap = await transaction.get(docRefKunjungan);
+      if (docSnap.exists) {
+        transaction.update(docRefKunjungan,
+            <String, dynamic>{'status verifikasi': statusVerifikasi2});
+      }
+    });
+
+    DocumentReference docRefUsersKunjungan = FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget.uid)
+        .collection("kunjungan")
+        .doc(widget.docId);
+
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot docSnap = await transaction.get(docRefUsersKunjungan);
+      if (docSnap.exists) {
+        transaction.update(docRefUsersKunjungan,
+            <String, dynamic>{'status verifikasi': statusVerifikasi2});
+      }
+    });
+  }
+
+  Future<dynamic> terverifikasi() async {
+    await FirebaseFirestore.instance
+        .collection("terverifikasi")
+        .doc(widget.docId)
+        .set({
+      'docId': widget.docId,
+      'uid': widget.uid,
+      'tanggal kunjungan': widget.tanggalKunjungan,
+      'nomor hp': widget.nomorHp,
+      'nama mitra binaan': widget.namaMB,
+      'nama lokasi': widget.namaLokasi,
+      'koordinat lokasi': widget.koordinatLokasi,
+      'kode mitra binaan': widget.kodeMB,
+      'keterangan': widget.keterangan,
+      'file foto': widget.fileFoto,
+      'alamat': widget.alamat,
+      'status verifikasi': statusVerifikasi1,
+      'tanggal verifikasi': tglVerifikasi
+    }).then((_) {
+      updateStatusTerverifikasi();
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.pushNamed(context, '/verifikasi');
+      });
+    });
+  }
+
+  Future<dynamic> penolakan() async {
+    await FirebaseFirestore.instance
+        .collection("penolakan")
+        .doc(widget.docId)
+        .set({
+      'docId': widget.docId,
+      'uid': widget.uid,
+      'tanggal kunjungan': widget.tanggalKunjungan,
+      'nomor hp': widget.nomorHp,
+      'nama mitra binaan': widget.namaMB,
+      'nama lokasi': widget.namaLokasi,
+      'koordinat lokasi': widget.koordinatLokasi,
+      'kode mitra binaan': widget.kodeMB,
+      'keterangan': widget.keterangan,
+      'file foto': widget.fileFoto,
+      'alamat': widget.alamat,
+      'status verifikasi': statusVerifikasi2,
+      'tanggal verifikasi': tglVerifikasi
+    }).then((_) {
+      updateStatusPenolakan();
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.pushNamed(context, '/penolakan');
+      });
+    });
   }
 }

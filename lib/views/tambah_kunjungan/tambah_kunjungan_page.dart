@@ -40,9 +40,11 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
   final TextEditingController _controllerAlamat = TextEditingController();
   final TextEditingController _controllerKeterangan = TextEditingController();
 
+  String statusVerifikasi = "";
+
   String? uid;
   String? _imageURL;
-  String? dateNow;
+  String dateNow = DateFormat('dd-MM-yyyy - kk:mm').format(DateTime.now());
 
   File? _file;
   PlatformFile? _platformFile;
@@ -63,9 +65,6 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-    dateNow = DateFormat('dd-MM-yyyy - kk:mm').format(now);
-
     return Scaffold(
       body: SafeArea(
           child: Container(
@@ -524,9 +523,11 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
           'keterangan': _controllerKeterangan.text,
           'file foto': _imageURL,
           'tanggal kunjungan': dateNow,
+          'status verifikasi': statusVerifikasi
         });
 
         await FirebaseFirestore.instance.collection("kunjungan").doc(docId.id).set({
+          'docId': docId.id,
           'uid': uid,
           'nama lokasi': widget.location,
           'koordinat lokasi':
@@ -538,6 +539,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
           'keterangan': _controllerKeterangan.text,
           'file foto': _imageURL,
           'tanggal kunjungan': dateNow,
+          'status verifikasi': statusVerifikasi
         });
 
         Future.delayed(const Duration(seconds: 3), () {

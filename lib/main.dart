@@ -1,3 +1,7 @@
+import 'package:emonit/admin/drawer/kunjungan_page.dart';
+import 'package:emonit/admin/drawer/penolakan_page.dart';
+import 'package:emonit/admin/drawer/petugas_page.dart';
+import 'package:emonit/admin/drawer/terverifikasi_page.dart';
 import 'package:emonit/theme/colors.dart';
 import 'package:emonit/views/login_page.dart';
 import 'package:emonit/views/initial_page.dart';         
@@ -34,6 +38,10 @@ class MyApp extends StatelessWidget {
         title: 'E-monit',
         initialRoute: '/',
         routes: {
+          '/petugas': (context) => const PetugasPage(),
+          '/kunjungan': (context) => const KunjunganPage(),
+          '/verifikasi': (context) => const VerifikasiPage(),
+          '/penolakan': (context) => const PenolakanPage(),
           '/login': (context) => const LoginPage(),
           '/signUp': (context) => const SignUpPage(),
           '/initialPage': (context) => const InitialPage()

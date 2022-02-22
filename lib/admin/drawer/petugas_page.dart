@@ -64,7 +64,7 @@ class _PetugasPageState extends State<PetugasPage> {
                       leading: const Icon(Icons.account_circle, size: 36,),
                       title: Text(
                         "${data['nama lengkap']}",
-                        style: const TextStyle(fontWeight: FontWeight.w500),
+                        style: const TextStyle(color: kBlack54, fontWeight: FontWeight.bold),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +73,7 @@ class _PetugasPageState extends State<PetugasPage> {
                          Text(
                                 "${data['uid']}",
                                 style: const TextStyle(
-                                    color: Colors.black54,
+                                    color: kBlack54,
                                    ),
                               ),
                           const SizedBox(
@@ -130,7 +130,7 @@ class DetailPetugasPage extends StatefulWidget {
 }
 
 class _DetailPetugasPageState extends State<DetailPetugasPage> {
-  String title = "Detail Petugas";
+  String title = "Detail Data Petugas";
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +157,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.uid,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,
@@ -172,7 +172,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.username,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,
@@ -187,7 +187,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.email,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,
@@ -202,7 +202,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.namaPetugas,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,
@@ -217,7 +217,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.lokasiKerja,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,
@@ -232,7 +232,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.nomorHp,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,
@@ -247,7 +247,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.alamat,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,
@@ -262,7 +262,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.agama,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,
@@ -277,7 +277,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.jenisKelamin,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,
@@ -292,7 +292,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.nik,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,
@@ -307,7 +307,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.noKk,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,
@@ -322,7 +322,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.noKtp,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,
@@ -337,7 +337,7 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.ttl,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold, fontSize: 16),
+                    color: kBlack54, fontWeight: FontWeight.bold,),
               ),
               const SizedBox(
                 height: 12,

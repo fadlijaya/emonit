@@ -41,7 +41,8 @@ class _DalamProsesTabState extends State<DalamProsesTab> {
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot data) {
                 return SizedBox(
-                  child: Column(
+                  child: data['status verifikasi'] == ""
+                  ? Column(
                     children: [
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -72,7 +73,8 @@ class _DalamProsesTabState extends State<DalamProsesTab> {
                       ),
                       const Divider(thickness: 2,)
                     ],
-                  ),
+                  )
+                  : Container()
                 );
               }).toList(),
             );
