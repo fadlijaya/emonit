@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emonit/theme/colors.dart';
-import 'package:emonit/utils/constant.dart';
+import 'package:emonit/users/theme/colors.dart';
+import 'package:emonit/users/utils/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -102,13 +102,12 @@ class _HomePageState extends State<HomePage> {
               topLeft: Radius.circular(24), topRight: Radius.circular(24)),
           color: kWhite,
         ),
-        padding: const EdgeInsets.all(paddingDefault),
         child: Column(
           children: [
             Row(
               children: const [
                 Padding(
-                  padding: EdgeInsets.only(top: paddingDefault),
+                  padding: EdgeInsets.only(top: paddingDefault, left: paddingDefault),
                   child: Text(
                     'Daftar Kunjungan',
                     style: TextStyle(
@@ -144,16 +143,13 @@ class _HomePageState extends State<HomePage> {
                         return ListView(
                             children: snapshot.data!.docs
                                 .map((DocumentSnapshot data) {
-                          return Container(
-                            height: 248,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: kBlack26),
-                                borderRadius: BorderRadius.circular(8)),
+                          return SizedBox(
+                            height: 280,
                             child: Column(
                               children: [
                                 Container(
                                   padding: const EdgeInsets.only(
-                                      right: 8, left: 8, top: 8),
+                                      right: 16, left: 16, top: 8),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -176,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                                           Flexible(child: Text("${data['nama lokasi']}", style: const TextStyle(fontSize: 12, color: kBlack54),))
                                         ],
                                       ),
-                                      const SizedBox(height: 8,),
+                                      const SizedBox(height: 4,),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
@@ -198,14 +194,8 @@ class _HomePageState extends State<HomePage> {
                                     child: data['file foto'] != null
                                         ? Container(
                                             width: double.infinity,
-                                            height: 140.0,
+                                            height: 160.0,
                                             decoration: BoxDecoration(
-                                                borderRadius:
-                                                    const BorderRadius.only(
-                                                        bottomLeft:
-                                                            Radius.circular(8),
-                                                        bottomRight:
-                                                            Radius.circular(8)),
                                                 image: DecorationImage(
                                                     fit: BoxFit.cover,
                                                     image: NetworkImage(
@@ -220,7 +210,8 @@ class _HomePageState extends State<HomePage> {
                                                   fontSize: 12,
                                                   color: Colors.grey),
                                             )),
-                                          ))
+                                          )),
+                                          const Divider(thickness: 8,)
                               ],
                             ),
                           );

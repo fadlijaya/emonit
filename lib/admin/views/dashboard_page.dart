@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emonit/admin/drawer/kunjungan_page.dart';
-import 'package:emonit/admin/drawer/penolakan_page.dart';
-import 'package:emonit/admin/drawer/petugas_page.dart';
-import 'package:emonit/admin/drawer/terverifikasi_page.dart';
-import 'package:emonit/theme/colors.dart';
-import 'package:emonit/utils/constant.dart';
+import 'package:emonit/admin/views/drawer/kunjungan_page.dart';
+import 'package:emonit/admin/views/drawer/penolakan_page.dart';
+import 'package:emonit/admin/views/drawer/petugas_page.dart';
+import 'package:emonit/admin/views/drawer/terverifikasi_page.dart';
+import 'package:emonit/users/theme/colors.dart';
+import 'package:emonit/users/utils/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emonit/theme/colors.dart';
-import 'package:emonit/utils/constant.dart';
-import 'package:emonit/views/akun/profil_page.dart';
+import 'package:emonit/users/theme/colors.dart';
+import 'package:emonit/users/utils/constant.dart';
+import 'package:emonit/users/views/akun/profil_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -158,12 +158,16 @@ class _AkunPageState extends State<AkunPage> {
                     'Batal',
                     style: TextStyle(color: Colors.grey),
                   )),
-              TextButton(
-                  onPressed: () => Navigator.pushNamed(context, '/login'),
-                  child: const Text(
+              ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(kRed),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)))
+              ),
+              onPressed: () =>  Navigator.pushNamed(context, '/login'), 
+              child: const Text(
                     'Ya',
-                    style: TextStyle(color: kRed),
-                  ))
+                    style: TextStyle(color: kWhite),
+                  )),
             ],
           );
         });
@@ -184,8 +188,8 @@ class _AkunPageState extends State<AkunPage> {
           _nik = result.docs[0].data()['nik'];
           _phoneNumber = result.docs[0].data()['nomor hp'];
           _workLocation = result.docs[0].data()['lokasi kerja'];
-          _noKtp = result.docs[0].data()['no. ktp'];
-          _noKk = result.docs[0].data()['no. kk'];
+          _noKtp = result.docs[0].data()['ktp'];
+          _noKk = result.docs[0].data()['kk'];
           _gender = result.docs[0].data()['jenis kelamin'];
           _religion = result.docs[0].data()['agama'];
           _placeBirth = result.docs[0].data()['tempat tanggal lahir'];

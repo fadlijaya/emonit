@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emonit/theme/colors.dart';
-import 'package:emonit/utils/constant.dart';
+import 'package:emonit/users/theme/colors.dart';
+import 'package:emonit/users/utils/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -255,8 +255,8 @@ class _SignUpPageState extends State<SignUpPage> {
             'nik': _nik,
             'nomor hp': _phoneNumber,
             'lokasi kerja': _workLocation,
-            'no. ktp': _noKtp,
-            'no. kk': _noKk,
+            'ktp': _noKtp,
+            'kk': _noKk,
             'jenis kelamin': _gender,
             'agama': _religion,
             'tempat tanggal lahir': _placeBirth,

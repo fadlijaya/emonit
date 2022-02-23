@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emonit/theme/colors.dart';
-import 'package:emonit/views/akun/akun_page.dart';
-import 'package:emonit/views/home/home_page.dart';
-import 'package:emonit/views/tambah_kunjungan/tambah_kunjungan_page.dart';
-import 'package:emonit/views/kunjungan/kunjungan_page.dart';
-import 'package:emonit/views/report/report_page.dart';
+import 'package:emonit/users/theme/colors.dart';
+import 'package:emonit/users/views/akun/akun_page.dart';
+import 'package:emonit/users/views/home/home_page.dart';
+import 'package:emonit/users/views/tambah_kunjungan/tambah_kunjungan_page.dart';
+import 'package:emonit/users/views/kunjungan/kunjungan_page.dart';
+import 'package:emonit/users/views/report/report_page.dart';
 import 'package:flutter/material.dart';
 
 class InitialPage extends StatefulWidget {

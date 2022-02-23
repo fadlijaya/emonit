@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emonit/admin/drawer/petugas_page.dart';
-import 'package:emonit/theme/colors.dart';
-import 'package:emonit/utils/constant.dart';
+import 'package:emonit/admin/views/drawer/petugas_page.dart';
+import 'package:emonit/users/theme/colors.dart';
+import 'package:emonit/users/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -161,7 +161,7 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
   String statusVerifikasi1 = "Terverifikasi";
   String statusVerifikasi2 = "Tidak Terverifikasi";
 
-  String tglVerifikasi = DateFormat('dd-mm-yyyy kk:mm').format(DateTime.now());
+  String tglVerifikasi = DateFormat('dd-MM-yyyy kk:mm').format(DateTime.now());
 
   bool isVisible = false;
 
@@ -513,6 +513,16 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
             )));
   }
 
+  Future<void> updateStatus1() {
+    CollectionReference kunjungan =
+        FirebaseFirestore.instance.collection("kunjungan");
+    return kunjungan
+        .doc(widget.docId)
+        .update({'status verifikasi': statusVerifikasi1})
+        .then((value) => "Updated")
+        .catchError((error) => "Failed to updated: $error");
+  }
+
   Future<dynamic> updateStatusTerverifikasi() async {
     DocumentReference docRefKunjungan =
         FirebaseFirestore.instance.collection("kunjungan").doc(widget.docId);
@@ -586,7 +596,7 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
       'status verifikasi': statusVerifikasi1,
       'tanggal verifikasi': tglVerifikasi
     }).then((_) {
-      updateStatusTerverifikasi();
+      updateStatus1();
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.pushNamed(context, '/verifikasi');
       });

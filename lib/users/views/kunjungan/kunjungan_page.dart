@@ -1,6 +1,6 @@
-import 'package:emonit/theme/colors.dart';
-import 'package:emonit/views/kunjungan/dalam_proses_tab.dart';
-import 'package:emonit/views/kunjungan/riwayat_tab.dart';
+import 'package:emonit/users/theme/colors.dart';
+import 'package:emonit/users/views/kunjungan/dalam_proses_tab.dart';
+import 'package:emonit/users/views/kunjungan/riwayat_tab.dart';
 import 'package:flutter/material.dart';
 
 class KunjunganPage extends StatefulWidget {

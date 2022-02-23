@@ -23,7 +23,9 @@ dependencies:
   provider: ^6.0.2
   geolocator: ^8.0.0
   geocoding: ^2.0.2
+  flutter_geocoder: ^0.2.2-nullsafety
   google_maps_flutter: ^2.1.0
+  location: ^4.3.0
   map_picker: ^0.0.3
   intl: ^0.17.0
   

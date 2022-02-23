@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:emonit/theme/colors.dart';
-import 'package:emonit/utils/constant.dart';
-import 'package:emonit/views/tambah_kunjungan/map_pick.dart';
+import 'package:emonit/users/theme/colors.dart';
+import 'package:emonit/users/utils/constant.dart';
+import 'package:emonit/users/views/tambah_kunjungan/lokasi_page.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -40,7 +40,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
   final TextEditingController _controllerAlamat = TextEditingController();
   final TextEditingController _controllerKeterangan = TextEditingController();
 
-  String statusVerifikasi = "";
+  final String statusVerifikasi = "";
 
   String? uid;
   String? _imageURL;
@@ -123,7 +123,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
         children: [
           GestureDetector(
             onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const MapPick())),
+                MaterialPageRoute(builder: (context) => const LokasiPage())),
             child: Row(
               children: [
                 Image.asset('assets/google-maps.png'),

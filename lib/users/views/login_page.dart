@@ -1,8 +1,8 @@
-import 'package:emonit/admin/dashboard_page.dart';
-import 'package:emonit/theme/colors.dart';
-import 'package:emonit/utils/constant.dart';
-import 'package:emonit/views/initial_page.dart';
-import 'package:emonit/views/sign_up_page.dart';
+import 'package:emonit/admin/views/dashboard_page.dart';
+import 'package:emonit/users/theme/colors.dart';
+import 'package:emonit/users/utils/constant.dart';
+import 'package:emonit/users/views/initial_page.dart';
+import 'package:emonit/users/views/sign_up_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

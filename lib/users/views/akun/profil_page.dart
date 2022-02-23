@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:emonit/theme/colors.dart';
-import 'package:emonit/utils/constant.dart';
+import 'package:emonit/users/theme/colors.dart';
+import 'package:emonit/users/utils/constant.dart';
 import 'package:flutter/material.dart';
 
 class ProfilPage extends StatefulWidget {
@@ -65,6 +65,15 @@ class _ProfilPageState extends State<ProfilPage> {
         _controllerfullName.text = widget.fullname;
         _controllerUsername.text = widget.username;
         _controllerEmail.text = widget.email;
+        _controllerNik.text = widget.nik;
+        _controllerPhoneNumber.text = widget.phoneNumber;
+        _controllerWorkLocation.text = widget.workLocation;
+        _controllerNoKtp.text = widget.noKtp;
+        _controllerNoKk.text = widget.noKk;
+        _controllerGender.text = widget.gender;
+        _controllerReligion.text = widget.religion;
+        _controllerPlaceBirth.text = widget.placeBirth;
+        _controllerAddress.text = widget.address;
       });
     }
     super.initState();
@@ -178,6 +187,7 @@ class _ProfilPageState extends State<ProfilPage> {
             controller: _controllerNik,
             cursorColor: kRed,
             textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.number,
             decoration: const InputDecoration(
                 hintStyle: TextStyle(color: kRed),
                 focusedBorder:
@@ -242,6 +252,7 @@ class _ProfilPageState extends State<ProfilPage> {
             controller: _controllerNoKtp,
             cursorColor: kRed,
             textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.number,
             decoration: const InputDecoration(
                 hintStyle: TextStyle(color: kRed),
                 focusedBorder:
@@ -263,6 +274,7 @@ class _ProfilPageState extends State<ProfilPage> {
             controller: _controllerNoKk,
             cursorColor: kRed,
             textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.number,
             decoration: const InputDecoration(
                 hintStyle: TextStyle(color: kRed),
                 focusedBorder:
@@ -346,7 +358,7 @@ class _ProfilPageState extends State<ProfilPage> {
           TextFormField(
             controller: _controllerAddress,
             cursorColor: kRed,
-            textInputAction: TextInputAction.next,
+            textInputAction: TextInputAction.done,
             decoration: const InputDecoration(
                 hintStyle: TextStyle(color: kRed),
                 focusedBorder:
@@ -392,8 +404,8 @@ class _ProfilPageState extends State<ProfilPage> {
             'nik': _controllerNik.text,
             'nomor hp': _controllerPhoneNumber.text,
             'lokasi kerja': _controllerWorkLocation.text,
-            'no. ktp': _controllerNoKtp.text,
-            'no. kk': _controllerNoKk.text,
+            'ktp': _controllerNoKtp.text,
+            'kk': _controllerNoKk.text,
             'jenis kelamin': _controllerGender.text,
             'agama': _controllerReligion.text,
             'tempat tanggal lahir': _controllerPlaceBirth.text,
@@ -418,7 +430,10 @@ class _ProfilPageState extends State<ProfilPage> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: const [
-                Text("Data Berhasil di Update", style: TextStyle(color: kBlack54),),
+                Text(
+                  "Data Berhasil di Update",
+                  style: TextStyle(color: kBlack54),
+                ),
               ],
             ),
           );
