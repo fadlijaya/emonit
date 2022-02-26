@@ -41,6 +41,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
   final TextEditingController _controllerKeterangan = TextEditingController();
 
   final String statusVerifikasi = "";
+  final String tanggalVerifikasi = "";
 
   String? uid;
   String? _imageURL;
@@ -523,10 +524,14 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
           'keterangan': _controllerKeterangan.text,
           'file foto': _imageURL,
           'tanggal kunjungan': dateNow,
-          'status verifikasi': statusVerifikasi
+          'status verifikasi': statusVerifikasi,
+          'tanggal verifikasi': tanggalVerifikasi,
         });
 
-        await FirebaseFirestore.instance.collection("kunjungan").doc(docId.id).set({
+        await FirebaseFirestore.instance
+            .collection("kunjungan")
+            .doc(docId.id)
+            .set({
           'docId': docId.id,
           'uid': uid,
           'nama lokasi': widget.location,
@@ -539,7 +544,8 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
           'keterangan': _controllerKeterangan.text,
           'file foto': _imageURL,
           'tanggal kunjungan': dateNow,
-          'status verifikasi': statusVerifikasi
+          'status verifikasi': statusVerifikasi,
+          'tanggal verifikasi': tanggalVerifikasi,
         });
 
         Future.delayed(const Duration(seconds: 3), () {

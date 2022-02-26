@@ -24,14 +24,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    /*if (FirebaseAuth.instance.currentUser != null) {
+    if (FirebaseAuth.instance.currentUser != null) {
       WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const InitialPage()),
             (route) => false);
       });
-    }*/
+    }
     super.initState();
   }
 
@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
           height: 16,
         ),
         const Text(
-          "Selamat Datang di Aplikasi E-monit",
+          "Selamat Datang di Aplikasi e-Monit",
           style: TextStyle(color: kWhite),
         ),
         const SizedBox(

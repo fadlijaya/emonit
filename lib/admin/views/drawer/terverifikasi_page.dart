@@ -43,6 +43,8 @@ class _VerifikasiPageState extends State<VerifikasiPage> {
             return const Center(
               child: Text("Error!"),
             );
+          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text("Belum Ada Data!", style: TextStyle(color: kBlack54),));
           } else {
             return ListView(
                 children: snapshot.data!.docs.map((DocumentSnapshot data) {
@@ -86,13 +88,24 @@ class _VerifikasiPageState extends State<VerifikasiPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Icon(Icons.verified, color: kGreen, size: 16,),
-                          const SizedBox(width: 4,),
-                          Text("${data['status verifikasi']}", style: const TextStyle(color: kGreen, fontSize: 12),)
+                          const Icon(
+                            Icons.verified,
+                            color: kGreen,
+                            size: 16,
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            "${data['status verifikasi']}",
+                            style: const TextStyle(color: kGreen, fontSize: 12),
+                          )
                         ],
                       ),
                       const Divider(
@@ -161,17 +174,23 @@ class _DetailVerifikasiPageState extends State<DetailVerifikasiPage> {
           child: Column(
             children: [
               statusVerifikasi(),
-              const SizedBox(height: 24,),
+              const SizedBox(
+                height: 24,
+              ),
               idKunjungan(),
               const Divider(
                 thickness: 2,
               ),
-              const SizedBox(height: 12,),
+              const SizedBox(
+                height: 12,
+              ),
               idPetugas(),
               const Divider(
                 thickness: 2,
               ),
-              const SizedBox(height: 12,),
+              const SizedBox(
+                height: 12,
+              ),
               dataMB()
             ],
           ),
@@ -207,7 +226,13 @@ class _DetailVerifikasiPageState extends State<DetailVerifikasiPage> {
   Widget idKunjungan() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [const Text("ID Kunjungan", style: TextStyle(color: kBlack54),), Text(widget.docId)],
+      children: [
+        const Text(
+          "ID Kunjungan",
+          style: TextStyle(color: kBlack54),
+        ),
+        Text(widget.docId)
+      ],
     );
   }
 
@@ -215,7 +240,10 @@ class _DetailVerifikasiPageState extends State<DetailVerifikasiPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text("ID Petugas", style: TextStyle(color: kBlack54),),
+        const Text(
+          "ID Petugas",
+          style: TextStyle(color: kBlack54),
+        ),
         const SizedBox(height: 8),
         Text(widget.uid),
       ],

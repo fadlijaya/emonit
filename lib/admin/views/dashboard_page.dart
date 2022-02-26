@@ -153,6 +153,7 @@ class _DashboardPageState extends State<DashboardPage> {
           } else {
             int totalData = snapshot.data!.docs.length;
             return Card(
+              color: kOrange,
               elevation: 10.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0)),
@@ -166,6 +167,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         child: Icon(
                           Icons.account_circle,
                           size: 48.0,
+                          color: kWhite,
                         ),
                       ),
                     ],
@@ -173,14 +175,14 @@ class _DashboardPageState extends State<DashboardPage> {
                   Text(
                     "${int.parse(totalData.toString())}",
                     style: const TextStyle(
-                        fontSize: 24.0, fontWeight: FontWeight.bold),
+                        fontSize: 24.0, fontWeight: FontWeight.bold, color: kWhite),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
                     height: 8,
                   ),
                   const Text('Petugas',
-                      style: TextStyle(fontWeight: FontWeight.bold))
+                      style: TextStyle(fontWeight: FontWeight.bold, color: kWhite))
                 ],
               ),
             );
@@ -203,6 +205,7 @@ class _DashboardPageState extends State<DashboardPage> {
           } else {
             int totalData = snapshot.data!.docs.length;
             return Card(
+              color: kBlue,
               elevation: 10.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0)),
@@ -213,14 +216,14 @@ class _DashboardPageState extends State<DashboardPage> {
                       Padding(
                         padding: EdgeInsets.only(
                             top: paddingDefault, left: paddingDefault),
-                        child: Icon(Icons.timelapse, size: 48.0, color: kBlue),
+                        child: Icon(Icons.timelapse, size: 48.0, color: kWhite),
                       ),
                     ],
                   ),
                   Text(
                     "${int.parse(totalData.toString())}", //dashboardModel.totalProduct.toString(),
                     style: const TextStyle(
-                        fontSize: 24.0, fontWeight: FontWeight.bold),
+                        fontSize: 24.0, fontWeight: FontWeight.bold, color: kWhite),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
@@ -228,7 +231,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                   const Text(
                     'Kunjungan',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: kWhite),
                   )
                 ],
               ),
@@ -252,6 +255,7 @@ class _DashboardPageState extends State<DashboardPage> {
           } else {
             int totalData = snapshot.data!.docs.length;
             return Card(
+              color: kGreen,
               elevation: 10.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0)),
@@ -262,14 +266,14 @@ class _DashboardPageState extends State<DashboardPage> {
                       Padding(
                         padding: EdgeInsets.only(
                             top: paddingDefault, left: paddingDefault),
-                        child: Icon(Icons.verified, size: 48.0, color: kGreen),
+                        child: Icon(Icons.verified, size: 48.0, color: kWhite),
                       ),
                     ],
                   ),
                   Text(
                     "${int.parse(totalData.toString())}",
                     style:
-                        const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                        const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: kWhite),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
@@ -277,7 +281,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                   const Text(
                     'Terverifikasi',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: kWhite),
                   )
                 ],
               ),
@@ -301,6 +305,7 @@ class _DashboardPageState extends State<DashboardPage> {
           } else {
             int totalData = snapshot.data!.docs.length;
             return Card(
+              color: kRed,
               elevation: 10.0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0)),
@@ -311,14 +316,14 @@ class _DashboardPageState extends State<DashboardPage> {
                       Padding(
                         padding: EdgeInsets.only(
                             top: paddingDefault, left: paddingDefault),
-                        child: Icon(Icons.close, size: 48.0, color: kRed),
+                        child: Icon(Icons.close, size: 48.0, color: kWhite),
                       ),
                     ],
                   ),
                   Text(
                     "${int.parse(totalData.toString())}",
                     style:
-                        const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                        const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: kWhite),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(
@@ -326,7 +331,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   ),
                   const Text(
                     'Penolakan',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: kWhite),
                   )
                 ],
               ),

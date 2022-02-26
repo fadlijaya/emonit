@@ -11,7 +11,7 @@
     <uses-feature android:name="android.hardware.location.gps" android:required="false"  />
     
    <application
-        android:label="E-monit"
+        android:label="e-Monit"
         android:icon="@mipmap/ic_launcher">
         <meta-data 
                android:name="com.google.android.geo.API_KEY"

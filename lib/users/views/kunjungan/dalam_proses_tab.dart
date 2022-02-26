@@ -33,7 +33,7 @@ class _DalamProsesTabState extends State<DalamProsesTab> {
             return const Center(
               child: Text("Error!"),
             );
-          } else if (!snapshot.hasData && snapshot.data!.docs.isEmpty) {
+          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return const Center(
               child: Text("Belum Ada Data!"),
             );
@@ -41,41 +41,88 @@ class _DalamProsesTabState extends State<DalamProsesTab> {
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot data) {
                 return SizedBox(
-                  child: data['status verifikasi'] == ""
-                  ? Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                        child: ListTile(
-                          title: Text("${data['kode mitra binaan']}", style: const TextStyle(fontWeight: FontWeight.bold, color: kBlack54),),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    child: data['status verifikasi'] == ""
+                        ? Column(
                             children: [
-                              Text("${data['nama lokasi']}"),
-                              const SizedBox(height: 12,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text("${data['tanggal kunjungan']}")
-                                ],
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 16),
+                                child: ListTile(
+                                  title: Row(
+                                    children: [
+                                      Flexible(
+                                          child: Text(
+                                              "${data['nama mitra binaan']}",
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: kBlack54))),
+                                      const SizedBox(
+                                        width: 4,
+                                      ),
+                                      const Text("|"),
+                                      const SizedBox(
+                                        width: 4,
+                                      ),
+                                      Text(
+                                        "${data['kode mitra binaan']}", style: const TextStyle(color: kBlack54),
+                                      ),
+                                    ],
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Text(
+                                        "${data['nama lokasi']}",
+                                        style: const TextStyle(fontSize: 12),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            "${data['tanggal kunjungan']}",
+                                            style:
+                                                const TextStyle(fontSize: 12),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 12,
+                                      ),
+                                      Row(
+                                        children: const [
+                                          Icon(
+                                            Icons.timelapse,
+                                            color: kRed,
+                                            size: 20,
+                                          ),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            "Dalam Proses Verifikasi",
+                                            style: TextStyle(
+                                                color: kRed, fontSize: 12),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ),
-                              const SizedBox(height: 12,),
-                              Row(
-                                children: const [
-                                  Icon(Icons.timelapse, color: kRed, size: 20,),
-                                  SizedBox(width: 8 ,),
-                                  Text("Dalam Proses Verifikasi", style: TextStyle(color: kRed, fontSize: 12),)
-                                ],
+                              const Divider(
+                                thickness: 2,
                               )
                             ],
-                          ),
-                        ),
-                      ),
-                      const Divider(thickness: 2,)
-                    ],
-                  )
-                  : Container()
-                );
+                          )
+                        : Container());
               }).toList(),
             );
           }

@@ -4,7 +4,8 @@ import 'package:emonit/admin/views/drawer/petugas_page.dart';
 import 'package:emonit/admin/views/drawer/terverifikasi_page.dart';
 import 'package:emonit/users/theme/colors.dart';
 import 'package:emonit/users/views/login_page.dart';
-import 'package:emonit/users/views/initial_page.dart';         
+import 'package:emonit/users/views/initial_page.dart';
+import 'package:emonit/users/views/report/pdf_review_page.dart';         
 import 'package:emonit/users/views/sign_up_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'E-monit',
+        title: 'e-Monit',
         initialRoute: '/',
         routes: {
           '/petugas': (context) => const PetugasPage(),
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
           '/penolakan': (context) => const PenolakanPage(),
           '/login': (context) => const LoginPage(),
           '/signUp': (context) => const SignUpPage(),
-          '/initialPage': (context) => const InitialPage()
+          '/initialPage': (context) => const InitialPage(),
+          '/pdfPreviewPage': (context) => const PdfPreviewPage()
         },
         theme: ThemeData(
             primarySwatch: Colors.blue,
@@ -73,7 +75,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
         imageSrc: 'assets/logo_telkom.png',
         backgroundColor: kRed,
         imageSize: 90,
-        text: 'E-monit',
+        text: 'e-Monit',
         textType: TextType.NormalText,
         textStyle: const TextStyle(
             fontSize: 40, color: kWhite, fontWeight: FontWeight.bold),

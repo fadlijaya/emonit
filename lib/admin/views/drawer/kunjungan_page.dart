@@ -45,6 +45,13 @@ class _KunjunganPageState extends State<KunjunganPage> {
             return const Center(
               child: Text("Error!"),
             );
+          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text(
+                "Belum Ada Data!",
+                style: TextStyle(color: kBlack54),
+              ),
+            );
           } else {
             return ListView(
                 children: snapshot.data!.docs.map((DocumentSnapshot data) {
@@ -67,17 +74,37 @@ class _KunjunganPageState extends State<KunjunganPage> {
                               fileFoto: data['file foto'],
                               alamat: data['alamat'],
                               statusVerifikasi: data['status verifikasi']))),
-                  title: Text(
-                    "${data['kode mitra binaan']}",
-                    style: const TextStyle(
-                        color: kBlack54, fontWeight: FontWeight.bold),
+                  title: Row(
+                    children: [
+                      Text(
+                        "${data['nama mitra binaan']}",
+                        style: const TextStyle(
+                            color: kBlack54, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      const Text("|"),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        "${data['kode mitra binaan']}",
+                        style: const TextStyle(
+                          color: kBlack54,
+                        ),
+                      ),
+                    ],
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(
+                        height: 8,
+                      ),
                       Text("${data['nama lokasi']}"),
                       const SizedBox(
-                        height: 12,
+                        height: 8,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -88,15 +115,39 @@ class _KunjunganPageState extends State<KunjunganPage> {
                           ),
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${data['status verifikasi']}",
-                            style: const TextStyle(fontSize: 12, color: kBlue),
-                          ),
-                        ],
-                      ),
+                      data['status verifikasi'] == ""
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: const [
+                                Icon(
+                                  Icons.timelapse,
+                                  size: 16,
+                                  color: kRed,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                  "Dalam Proses Pemeriksaan",
+                                  style: TextStyle(color: kRed, fontSize: 12),
+                                ),
+                              ],
+                            )
+                          : Row(
+                              children: const [
+                                Icon(
+                                  Icons.check,
+                                  size: 16,
+                                  color: kGreen,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text("Telah Diperiksa",
+                                    style:
+                                        TextStyle(color: kGreen, fontSize: 12)),
+                              ],
+                            ),
                       const Divider(
                         thickness: 2,
                       )
@@ -180,8 +231,8 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
           _nik = result.docs[0].data()['nik'];
           _phoneNumber = result.docs[0].data()['nomor hp'];
           _workLocation = result.docs[0].data()['lokasi kerja'];
-          _noKtp = result.docs[0].data()['no. ktp'];
-          _noKk = result.docs[0].data()['no. kk'];
+          _noKtp = result.docs[0].data()['ktp'];
+          _noKk = result.docs[0].data()['kk'];
           _gender = result.docs[0].data()['jenis kelamin'];
           _religion = result.docs[0].data()['agama'];
           _placeBirth = result.docs[0].data()['tempat tanggal lahir'];
@@ -263,7 +314,7 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
                                   ttl: _placeBirth.toString()))),
                       child: const Text(
                         "Lihat Detail",
-                        style: TextStyle(color: kRed),
+                        style: TextStyle(color: kGreen),
                       ))
                 ],
               ),
@@ -513,68 +564,60 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
             )));
   }
 
-  Future<void> updateStatus1() {
+  Future<void> updateStatusKunjungan1() {
     CollectionReference kunjungan =
         FirebaseFirestore.instance.collection("kunjungan");
     return kunjungan
         .doc(widget.docId)
-        .update({'status verifikasi': statusVerifikasi1})
+        .update({
+          'status verifikasi': statusVerifikasi1,
+          'tanggal verifikasi': tglVerifikasi
+        })
         .then((value) => "Updated")
         .catchError((error) => "Failed to updated: $error");
   }
 
-  Future<dynamic> updateStatusTerverifikasi() async {
-    DocumentReference docRefKunjungan =
-        FirebaseFirestore.instance.collection("kunjungan").doc(widget.docId);
-
-    FirebaseFirestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot docSnap = await transaction.get(docRefKunjungan);
-      if (docSnap.exists) {
-        transaction.update(docRefKunjungan,
-            <String, dynamic>{'status verifikasi': statusVerifikasi1});
-      }
-    });
-
-    DocumentReference docRefUsersKunjungan = FirebaseFirestore.instance
-        .collection("users")
-        .doc(widget.uid)
-        .collection("kunjungan")
-        .doc(widget.docId);
-
-    FirebaseFirestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot docSnap = await transaction.get(docRefUsersKunjungan);
-      if (docSnap.exists) {
-        transaction.update(docRefUsersKunjungan,
-            <String, dynamic>{'status verifikasi': statusVerifikasi1});
-      }
-    });
+  Future<void> updateStatusKunjungan2() {
+    CollectionReference kunjungan =
+        FirebaseFirestore.instance.collection("kunjungan");
+    return kunjungan
+        .doc(widget.docId)
+        .update({
+          'status verifikasi': statusVerifikasi2,
+          'tanggal verifikasi': tglVerifikasi
+        })
+        .then((value) => "Updated")
+        .catchError((error) => "Failed to updated: $error");
   }
 
-  Future<dynamic> updateStatusPenolakan() async {
-    DocumentReference docRefKunjungan =
-        FirebaseFirestore.instance.collection("kunjungan").doc(widget.docId);
-
-    FirebaseFirestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot docSnap = await transaction.get(docRefKunjungan);
-      if (docSnap.exists) {
-        transaction.update(docRefKunjungan,
-            <String, dynamic>{'status verifikasi': statusVerifikasi2});
-      }
-    });
-
-    DocumentReference docRefUsersKunjungan = FirebaseFirestore.instance
-        .collection("users")
+  Future<void> updateStatusUsersKunjungan1() {
+    CollectionReference usersKunjungan =
+        FirebaseFirestore.instance.collection("users");
+    return usersKunjungan
         .doc(widget.uid)
         .collection("kunjungan")
-        .doc(widget.docId);
+        .doc(widget.docId)
+        .update({
+          'status verifikasi': statusVerifikasi1,
+          'tanggal verifikasi': tglVerifikasi
+        })
+        .then((value) => "Updated")
+        .catchError((error) => "Failed to updated: $error");
+  }
 
-    FirebaseFirestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot docSnap = await transaction.get(docRefUsersKunjungan);
-      if (docSnap.exists) {
-        transaction.update(docRefUsersKunjungan,
-            <String, dynamic>{'status verifikasi': statusVerifikasi2});
-      }
-    });
+  Future<void> updateStatusUsersKunjungan2() {
+    CollectionReference usersKunjungan =
+        FirebaseFirestore.instance.collection("users");
+    return usersKunjungan
+        .doc(widget.uid)
+        .collection("kunjungan")
+        .doc(widget.docId)
+        .update({
+          'status verifikasi': statusVerifikasi2,
+          'tanggal verifikasi': tglVerifikasi
+        })
+        .then((value) => "Updated")
+        .catchError((error) => "Failed to updated: $error");
   }
 
   Future<dynamic> terverifikasi() async {
@@ -596,7 +639,8 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
       'status verifikasi': statusVerifikasi1,
       'tanggal verifikasi': tglVerifikasi
     }).then((_) {
-      updateStatus1();
+      updateStatusKunjungan1();
+      updateStatusUsersKunjungan1();
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.pushNamed(context, '/verifikasi');
       });
@@ -622,7 +666,8 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
       'status verifikasi': statusVerifikasi2,
       'tanggal verifikasi': tglVerifikasi
     }).then((_) {
-      updateStatusPenolakan();
+      updateStatusKunjungan2();
+      updateStatusUsersKunjungan2();
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.pushNamed(context, '/penolakan');
       });

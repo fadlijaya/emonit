@@ -34,6 +34,13 @@ class _PetugasPageState extends State<PetugasPage> {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return const Center(child: Text('Error!'));
+              } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                return const Center(
+                  child: Text(
+                    "Belum Ada Data!",
+                    style: TextStyle(color: kBlack54),
+                  ),
+                );
               } else {
                 return ListView(
                     children:
@@ -58,30 +65,35 @@ class _PetugasPageState extends State<PetugasPage> {
                                   agama: data['agama'],
                                   jenisKelamin: data['jenis kelamin'],
                                   nik: data['nik'],
-                                  noKk: data['no. kk'],
-                                  noKtp: data['no. ktp'],
+                                  noKk: data['kk'],
+                                  noKtp: data['ktp'],
                                   ttl: data['tempat tanggal lahir']))),
-                      leading: const Icon(Icons.account_circle, size: 36,),
+                      leading: const Icon(
+                        Icons.account_circle,
+                        size: 36,
+                      ),
                       title: Text(
                         "${data['nama lengkap']}",
-                        style: const TextStyle(color: kBlack54, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            color: kBlack54, fontWeight: FontWeight.bold),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 8),
-                         Text(
-                                "${data['uid']}",
-                                style: const TextStyle(
-                                    color: kBlack54,
-                                   ),
-                              ),
+                          Text(
+                            "${data['lokasi kerja']}",
+                            style: const TextStyle(
+                              color: kBlack54,
+                            ),
+                          ),
                           const SizedBox(
                             height: 8,
                           ),
-                           const Divider(thickness: 2,)
+                          const Divider(
+                            thickness: 2,
+                          )
                         ],
-                       
                       ),
                     ),
                   );
@@ -157,7 +169,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.uid,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -172,7 +186,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.username,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -187,7 +203,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.email,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -202,7 +220,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.namaPetugas,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -217,7 +237,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.lokasiKerja,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -232,7 +254,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.nomorHp,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -247,7 +271,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.alamat,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -262,7 +288,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.agama,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -277,7 +305,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.jenisKelamin,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -292,7 +322,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.nik,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -307,7 +339,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.noKk,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -322,7 +356,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.noKtp,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
@@ -337,7 +373,9 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
               Text(
                 widget.ttl,
                 style: const TextStyle(
-                    color: kBlack54, fontWeight: FontWeight.bold,),
+                  color: kBlack54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: 12,
