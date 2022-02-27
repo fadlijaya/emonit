@@ -107,7 +107,7 @@ class _RiwayatTabState extends State<RiwayatTab> {
                                             width: 4,
                                           ),
                                           Text(
-                                            "Telah Diperiksa",
+                                            "Telah Diverifikasi",
                                             style: TextStyle(
                                                 color: kGreen, fontSize: 12),
                                           )

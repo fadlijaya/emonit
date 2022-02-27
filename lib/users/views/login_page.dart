@@ -208,19 +208,12 @@ class _LoginPageState extends State<LoginPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text(
-            'Belum Punya Akun ?',
-            style: TextStyle(color: kWhite),
-          ),
-          const SizedBox(
-            width: 8,
-          ),
           TextButton(
               onPressed: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const SignUpPage())),
               child: const Text(
                 'Sign Up',
-                style: TextStyle(color: kWhite, fontWeight: FontWeight.bold),
+                style: TextStyle(color: kWhite60, fontWeight: FontWeight.bold),
               ))
         ],
       ),

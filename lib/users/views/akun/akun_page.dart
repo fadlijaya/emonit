@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emonit/users/theme/colors.dart';
 import 'package:emonit/users/utils/constant.dart';
 import 'package:emonit/users/views/akun/profil_page.dart';
+import 'package:emonit/users/views/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -40,21 +41,21 @@ class _AkunPageState extends State<AkunPage> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Column(
-            children: [
-        header(),
-        buttonProfil(),
-        const Padding(
-            padding: EdgeInsets.symmetric(horizontal: paddingDefault),
-            child: Divider(
-              thickness: 1,
-            )),
-        buttonExit(),
-        const Padding(
-            padding: EdgeInsets.symmetric(horizontal: paddingDefault),
-            child: Divider(
-              thickness: 1,
-            )),
-            ],
+          children: [
+            header(),
+            buttonProfil(),
+            const Padding(
+                padding: EdgeInsets.symmetric(horizontal: paddingDefault),
+                child: Divider(
+                  thickness: 1,
+                )),
+            buttonExit(),
+            const Padding(
+                padding: EdgeInsets.symmetric(horizontal: paddingDefault),
+                child: Divider(
+                  thickness: 1,
+                )),
+          ],
         ),
       ),
     );
@@ -73,7 +74,8 @@ class _AkunPageState extends State<AkunPage> {
             const Text('Akun Saya',
                 style: TextStyle(
                     fontSize: 20, fontWeight: FontWeight.bold, color: kWhite)),
-            const Icon(Icons.account_circle_rounded, size: 72.0, color: kWhite60),
+            const Icon(Icons.account_circle_rounded,
+                size: 72.0, color: kWhite60),
             const SizedBox(
               height: 12,
             ),
@@ -91,22 +93,23 @@ class _AkunPageState extends State<AkunPage> {
   Widget buttonProfil() {
     return GestureDetector(
       onTap: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ProfilPage(
-            uid: _uid.toString(),
-            fullname: _fullname.toString(), 
-            username: _username.toString(),
-            email: _email.toString(),
-            nik: _nik.toString(),
-            phoneNumber: _phoneNumber.toString(),
-            workLocation: _workLocation.toString(),
-            noKtp: _noKtp.toString(),
-            noKk: _noKk.toString(),
-            gender: _gender.toString(),
-            religion: _religion.toString(),
-            placeBirth: _placeBirth.toString(),
-            address: _address.toString(),
-            isEdit: true
-            ))),
+          context,
+          MaterialPageRoute(
+              builder: (context) => ProfilPage(
+                  uid: _uid.toString(),
+                  fullname: _fullname.toString(),
+                  username: _username.toString(),
+                  email: _email.toString(),
+                  nik: _nik.toString(),
+                  phoneNumber: _phoneNumber.toString(),
+                  workLocation: _workLocation.toString(),
+                  noKtp: _noKtp.toString(),
+                  noKk: _noKk.toString(),
+                  gender: _gender.toString(),
+                  religion: _religion.toString(),
+                  placeBirth: _placeBirth.toString(),
+                  address: _address.toString(),
+                  isEdit: true))),
       child: ListTile(
         leading: const Icon(Icons.account_circle_rounded),
         title: Row(
@@ -159,18 +162,26 @@ class _AkunPageState extends State<AkunPage> {
                     style: TextStyle(color: Colors.grey),
                   )),
               ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(kRed),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)))
-              ),
-              onPressed: () =>  Navigator.pushNamed(context, '/login'), 
-              child: const Text(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(kRed),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)))),
+                  onPressed: signOut,
+                  child: const Text(
                     'Ya',
                     style: TextStyle(color: kWhite),
                   )),
             ],
           );
         });
+  }
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+        (route) => false);
   }
 
   Future getUser() async {

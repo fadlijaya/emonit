@@ -17,10 +17,9 @@ class ReportPage extends StatefulWidget {
 }
 
 class _ReportPageState extends State<ReportPage> {
-
   List<ModelKunjungan> data = [
     ModelKunjungan('Jan', 7),
-    ModelKunjungan('Feb', total.toInt()),
+    ModelKunjungan('Feb', 11),
     ModelKunjungan('Mar', 0),
     ModelKunjungan('Apr', 0),
     ModelKunjungan('Mei', 0),
@@ -40,6 +39,7 @@ class _ReportPageState extends State<ReportPage> {
       height: MediaQuery.of(context).size.height,
       child: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SfCartesianChart(
               primaryXAxis: CategoryAxis(),
@@ -60,38 +60,31 @@ class _ReportPageState extends State<ReportPage> {
                     dataLabelSettings: const DataLabelSettings(isVisible: true))
               ],
             ),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                children: [
-                  SfSparkBarChart.custom(
-                    trackball: const SparkChartTrackball(
-                      activationMode: SparkChartActivationMode.tap,
-                    ),
-                    color: kRed,
-                    labelDisplayMode: SparkChartLabelDisplayMode.all,
-                    xValueMapper: (int index) => data[index].bulan,
-                    yValueMapper: (int index) => data[index].kunjungan,
-                    dataCount: 5,
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  TextButton(
-                      onPressed: () =>
-                          Navigator.pushNamed(context, '/pdfPreviewPage'),
-                      child: const Text(
-                        "Cetak Report",
-                        style: TextStyle(color: kBlack54),
-                      )),
-                ],
-              ),
-            )),
+            const SizedBox(height: 12),
+            TextButton(
+                onPressed: () =>
+                    Navigator.pushNamed(context, '/pdfPreviewPage'),
+                child: const Text(
+                  "Cetak Report",
+                  style: TextStyle(color: kRed),
+                )),
           ],
         ),
       ),
     ));
+  }
+
+  Widget kunjungan() {
+    return StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection("users")
+            .doc(_auth.currentUser!.uid)
+            .collection("kunjungan")
+            .snapshots(),
+        builder: (context, snapshot) {
+          var total = snapshot.data!.docs.length;
+          return Text(total.toString());
+        });
   }
 
   getTotalKunjungan() async {
