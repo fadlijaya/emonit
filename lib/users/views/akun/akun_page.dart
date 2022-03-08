@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emonit/users/theme/colors.dart';
 import 'package:emonit/users/utils/constant.dart';
-import 'package:emonit/users/views/akun/profil_page.dart';
+import 'package:emonit/users/views/akun/data_pribadi_page.dart';
 import 'package:emonit/users/views/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +95,7 @@ class _AkunPageState extends State<AkunPage> {
       onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ProfilPage(
+              builder: (context) => DataPribadiPage(
                   uid: _uid.toString(),
                   fullname: _fullname.toString(),
                   username: _username.toString(),

@@ -3,7 +3,7 @@ import 'package:emonit/users/theme/colors.dart';
 import 'package:emonit/users/utils/constant.dart';
 import 'package:flutter/material.dart';
 
-class ProfilPage extends StatefulWidget {
+class DataPribadiPage extends StatefulWidget {
   final String uid;
   final String fullname;
   final String username;
@@ -19,7 +19,7 @@ class ProfilPage extends StatefulWidget {
   final String address;
   final bool isEdit;
 
-  const ProfilPage({
+  const DataPribadiPage({
     Key? key,
     required this.uid,
     required this.fullname,
@@ -38,10 +38,10 @@ class ProfilPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ProfilPageState createState() => _ProfilPageState();
+  _DataPribadiPageState createState() => _DataPribadiPageState();
 }
 
-class _ProfilPageState extends State<ProfilPage> {
+class _DataPribadiPageState extends State<DataPribadiPage> {
   final String title = 'Data Pribadi';
   final _formKey = GlobalKey<FormState>();
 
