@@ -18,6 +18,7 @@ class _DalamProsesTabState extends State<DalamProsesTab> {
       .collection("users")
       .doc(_auth.currentUser!.uid)
       .collection("kunjungan")
+      .orderBy("tanggal kunjungan")
       .snapshots();
 
   @override

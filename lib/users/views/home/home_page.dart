@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
       .collection("users")
       .doc(_auth.currentUser!.uid)
       .collection("kunjungan")
+      .orderBy("tanggal kunjungan")
       .snapshots();
 
   @override

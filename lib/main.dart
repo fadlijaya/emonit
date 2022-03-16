@@ -11,7 +11,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 
 void main() async {
@@ -25,38 +24,30 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) {
-        })
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'e-Monit',
-        initialRoute: '/',
-        routes: {
-          '/petugas': (context) => const PetugasPage(),
-          '/kunjungan': (context) => const KunjunganPage(),
-          '/verifikasi': (context) => const VerifikasiPage(),
-          '/penolakan': (context) => const PenolakanPage(),
-          '/login': (context) => const LoginPage(),
-          '/signUp': (context) => const SignUpPage(),
-          '/initialPage': (context) => const InitialPage(),
-          '/pdfPreviewPage': (context) => const PdfPreviewPage()
-        },
-        theme: ThemeData(
-            primarySwatch: Colors.blue,
-            primaryColor: kWhite,
-            inputDecorationTheme: const InputDecorationTheme(
-              labelStyle: TextStyle(color: kWhite),
-            ),
-            backgroundColor: kWhite),
-        home: const MySplashScreen(),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'e-Monit',
+      initialRoute: '/',
+      routes: {
+        '/petugas': (context) => const PetugasPage(),
+        '/kunjungan': (context) => const KunjunganPage(),
+        '/verifikasi': (context) => const VerifikasiPage(),
+        '/penolakan': (context) => const PenolakanPage(),
+        '/login': (context) => const LoginPage(),
+        '/signUp': (context) => const SignUpPage(),
+        '/initialPage': (context) => const InitialPage(),
+        '/pdfPreviewPage': (context) => const PdfPreviewPage()
+      },
+      theme: ThemeData(
+          primarySwatch: Colors.blue,
+          primaryColor: kWhite,
+          inputDecorationTheme: const InputDecorationTheme(
+            labelStyle: TextStyle(color: kWhite),
+          ),
+          backgroundColor: kWhite),
+      home: const MySplashScreen(),
     );
   }
 }

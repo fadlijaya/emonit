@@ -18,6 +18,7 @@ class _RiwayatTabState extends State<RiwayatTab> {
       .collection("users")
       .doc(_auth.currentUser!.uid)
       .collection("kunjungan")
+      .orderBy("tanggal kunjungan")
       .snapshots();
   @override
   Widget build(BuildContext context) {

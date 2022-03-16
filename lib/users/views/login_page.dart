@@ -1,4 +1,3 @@
-import 'package:emonit/admin/views/dashboard_page.dart';
 import 'package:emonit/users/theme/colors.dart';
 import 'package:emonit/users/utils/constant.dart';
 import 'package:emonit/users/views/initial_page.dart';
@@ -129,6 +128,8 @@ class _LoginPageState extends State<LoginPage> {
               validator: (value) {
                 if (value!.isEmpty) {
                   return "Masukkan Email";
+                } else if (!value.contains('@')) {
+                  return "Email Anda Salah";
                 }
                 return null;
               },
@@ -223,36 +224,20 @@ class _LoginPageState extends State<LoginPage> {
   Future<dynamic> login() async {
     if (!_isLoading) {
       if (_formKey.currentState!.validate()) {
-        if (_controllerEmail.text == "admincdcreg7@gmail.com" &&
-            _controllerPassword.text == "admincdcreg7") {
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-              email: _controllerEmail.text, password: _controllerPassword.text);
-               Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const DashboardPage()),
-                    (route) => false);
-        } else {
-          try {
-            await FirebaseAuth.instance
-                .signInWithEmailAndPassword(
-                    email: _controllerEmail.text,
-                    password: _controllerPassword.text)
-                .then((user) {
-              if (user.user!.email!.isNotEmpty) {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const InitialPage()),
-                    (route) => false);
-              }
-            });
-          } on FirebaseAuthException catch (e) {
-            if (e.code == 'user-not-found') {
-              displaySnackBar("Email Tidak Terdaftar");
-            } else if (e.code == 'wrong-password') {
-              //print('Wrong password provided for that user.');
-            }
+        try {
+          await FirebaseAuth.instance
+              .signInWithEmailAndPassword(
+                  email: _controllerEmail.text,
+                  password: _controllerPassword.text);
+           Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const InitialPage()),
+                  (route) => false);
+        } on FirebaseAuthException catch (e) {
+          if (e.code == 'user-not-found') {
+            displaySnackBar("Email Tidak Terdaftar");
+          } else if (e.code == 'wrong-password') {
+            displaySnackBar("Password Salah");
           }
         }
       }

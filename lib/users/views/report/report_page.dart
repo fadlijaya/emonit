@@ -4,7 +4,6 @@ import 'package:emonit/users/theme/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 var total;
