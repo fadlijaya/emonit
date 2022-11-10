@@ -259,7 +259,6 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
   String? _nik;
   String? _phoneNumber;
   String? _workLocation;
-  String? _noKtp;
   String? _noKk;
   String? _gender;
   String? _religion;
@@ -288,7 +287,6 @@ class _DetailKunjunganPageState extends State<DetailKunjunganPage> {
           _nik = result.docs[0].data()['nik'];
           _phoneNumber = result.docs[0].data()['nomor hp'];
           _workLocation = result.docs[0].data()['lokasi kerja'];
-          _noKtp = result.docs[0].data()['ktp'];
           _noKk = result.docs[0].data()['kk'];
           _gender = result.docs[0].data()['jenis kelamin'];
           _religion = result.docs[0].data()['agama'];
