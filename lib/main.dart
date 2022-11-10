@@ -3,15 +3,19 @@ import 'package:emonit/admin/views/drawer/penolakan_page.dart';
 import 'package:emonit/admin/views/drawer/petugas_page.dart';
 import 'package:emonit/admin/views/drawer/terverifikasi_page.dart';
 import 'package:emonit/users/theme/colors.dart';
+import 'package:emonit/users/views/akun/akun_page.dart';
 import 'package:emonit/users/views/login_page.dart';
 import 'package:emonit/users/views/initial_page.dart';
 import 'package:emonit/users/views/report/pdf_review_page.dart';         
 import 'package:emonit/users/views/sign_up_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
+
+User? email;
 
 void main() async {
   if (defaultTargetPlatform == TargetPlatform.android) {
@@ -19,6 +23,7 @@ void main() async {
   }
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  email = FirebaseAuth.instance.currentUser; 
   runApp(const MyApp());
 }
 
@@ -38,7 +43,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginPage(),
         '/signUp': (context) => const SignUpPage(),
         '/initialPage': (context) => const InitialPage(),
-        '/pdfPreviewPage': (context) => const PdfPreviewPage()
+        '/pdfPreviewPage': (context) => const PdfPreviewPage(),
+        '/akunPage': (context) => const AkunPage()
       },
       theme: ThemeData(
           primarySwatch: Colors.blue,
@@ -71,6 +77,8 @@ class _MySplashScreenState extends State<MySplashScreen> {
         textStyle: const TextStyle(
             fontSize: 40, color: kWhite, fontWeight: FontWeight.bold),
         duration: 3000,
-        navigateRoute: const LoginPage());
+        navigateRoute: email == null
+        ? const LoginPage()
+        : const InitialPage());
   }
 }

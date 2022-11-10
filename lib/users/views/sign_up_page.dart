@@ -23,7 +23,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final String? _nik = "";
   final String? _phoneNumber = "";
   final String? _workLocation = "";
-  final String? _noKtp = "";
   final String? _noKk = "";
   final String? _gender = "";
   final String? _religion = "";
@@ -238,6 +237,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Future<dynamic> signUp() async {
     if (!isLoading) {
       if (_formKey.currentState!.validate()) {
+        showAlertDialogLoading(context);
         try {
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
               email: _controllerEmail.text, password: _controllerPassword.text);
@@ -255,7 +255,6 @@ class _SignUpPageState extends State<SignUpPage> {
             'nik': _nik,
             'nomor hp': _phoneNumber,
             'lokasi kerja': _workLocation,
-            'ktp': _noKtp,
             'kk': _noKk,
             'jenis kelamin': _gender,
             'agama': _religion,
@@ -263,12 +262,36 @@ class _SignUpPageState extends State<SignUpPage> {
             'alamat': _address
           });
 
+          Navigator.pop(context);
           signUpDialog();
         } catch (e) {
           return e.toString();
         }
       }
     }
+  }
+
+   showAlertDialogLoading(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(),
+          Container(
+              margin: const EdgeInsets.only(left: 15),
+              child: const Text(
+                "Loading...",
+                style: TextStyle(fontSize: 12),
+              )),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   signUpDialog() {

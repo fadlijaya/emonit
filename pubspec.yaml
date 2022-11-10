@@ -1,5 +1,5 @@
 name: emonit
-description: A new Flutter project.
+description: application emonit
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -24,11 +24,13 @@ dependencies:
   geocoding: ^2.0.2
   flutter_geocoder: ^0.2.2-nullsafety
   google_maps_flutter: ^2.1.0
-  location: ^4.3.0
+  location: ^4.4.0
   map_picker: ^0.0.3
   intl: ^0.17.0
   printing: ^5.7.2
   syncfusion_flutter_charts: ^19.4.53
+  fluttertoast: ^8.0.9
+  flutter_datetime_picker: ^1.5.1
   
   cupertino_icons: ^1.0.2
 
@@ -37,13 +39,19 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^1.0.0
+  flutter_launcher_icons: "^0.9.2"
+
+flutter_icons:
+  ios: true
+  android: "launcher_icon" 
+  image_path_ios: "assets/launcher/launcher_icon.png"
+  image_path_android: "assets/launcher/launcher_icon.png"
 
 flutter:
-
   uses-material-design: true
-
   assets:
     - assets/google-maps.png
     - assets/logo_telkom.png
     - assets/pin.png
     - assets/admin.jpg
+    - assets/gif/success.gif

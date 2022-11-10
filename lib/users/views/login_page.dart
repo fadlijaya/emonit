@@ -1,3 +1,4 @@
+import 'package:emonit/admin/views/dashboard_page.dart';
 import 'package:emonit/users/theme/colors.dart';
 import 'package:emonit/users/utils/constant.dart';
 import 'package:emonit/users/views/initial_page.dart';
@@ -24,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     if (FirebaseAuth.instance.currentUser != null) {
-      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const InitialPage()),
@@ -36,12 +37,13 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kRed,
       body: SafeArea(
           child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        width: size.width,
+        height: size.height,
         padding: const EdgeInsets.all(paddingDefault),
         child: SingleChildScrollView(
           child: Column(
@@ -224,24 +226,56 @@ class _LoginPageState extends State<LoginPage> {
   Future<dynamic> login() async {
     if (!_isLoading) {
       if (_formKey.currentState!.validate()) {
+        showAlertDialogLoading(context);
         try {
-          await FirebaseAuth.instance
-              .signInWithEmailAndPassword(
-                  email: _controllerEmail.text,
-                  password: _controllerPassword.text);
-           Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => const InitialPage()),
-                  (route) => false);
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+              email: _controllerEmail.text, password: _controllerPassword.text);
+          if (_controllerEmail.text == "admincdcreg7@gmail.com" &&
+              _controllerPassword.text == "admincdcreg7") {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const DashboardPage()),
+                (route) => false);
+          } else {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const InitialPage()),
+                (route) => false);
+          }
         } on FirebaseAuthException catch (e) {
           if (e.code == 'user-not-found') {
-            displaySnackBar("Email Tidak Terdaftar");
+            Navigator.pop(context);
+            displaySnackBar("User Tidak Ditemukan");
           } else if (e.code == 'wrong-password') {
+            Navigator.pop(context);
             displaySnackBar("Password Salah");
           }
         }
       }
     }
+  }
+
+  showAlertDialogLoading(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(),
+          Container(
+              margin: const EdgeInsets.only(left: 15),
+              child: const Text(
+                "Loading...",
+                style: TextStyle(fontSize: 12),
+              )),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   displaySnackBar(text) {

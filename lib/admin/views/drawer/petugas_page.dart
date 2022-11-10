@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emonit/users/theme/colors.dart';
 import 'package:emonit/users/utils/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 final Stream<QuerySnapshot> _streamPetugas =
     FirebaseFirestore.instance.collection('users').snapshots();
@@ -18,14 +19,15 @@ class _PetugasPageState extends State<PetugasPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
         backgroundColor: kRed,
       ),
       body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        width: size.width,
+        height: size.height,
         child: StreamBuilder<QuerySnapshot>(
             stream: _streamPetugas,
             builder:
@@ -66,7 +68,6 @@ class _PetugasPageState extends State<PetugasPage> {
                                   jenisKelamin: data['jenis kelamin'],
                                   nik: data['nik'],
                                   noKk: data['kk'],
-                                  noKtp: data['ktp'],
                                   ttl: data['tempat tanggal lahir']))),
                       leading: const Icon(
                         Icons.account_circle,
@@ -74,8 +75,6 @@ class _PetugasPageState extends State<PetugasPage> {
                       ),
                       title: Text(
                         "${data['nama lengkap']}",
-                        style: const TextStyle(
-                            color: kBlack54, fontWeight: FontWeight.bold),
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,9 +82,6 @@ class _PetugasPageState extends State<PetugasPage> {
                           const SizedBox(height: 8),
                           Text(
                             "${data['lokasi kerja']}",
-                            style: const TextStyle(
-                              color: kBlack54,
-                            ),
                           ),
                           const SizedBox(
                             height: 8,
@@ -94,6 +90,62 @@ class _PetugasPageState extends State<PetugasPage> {
                             thickness: 2,
                           )
                         ],
+                      ),
+                      trailing: PopupMenuButton(
+                        itemBuilder: (BuildContext context) {
+                          return <PopupMenuEntry<String>>[
+                            PopupMenuItem<String>(
+                              value: 'hapus',
+                              child: Row(
+                                children: const [
+                                  Icon(Icons.delete),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 4),
+                                    child: Text("Hapus"),
+                                  )
+                                ],
+                              ),
+                            )
+                          ];
+                        },
+                        onSelected: (String value) async {
+                          if (value == 'hapus') {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Konfirmasi'),
+                                  content: Text(
+                                      'Apa kamu ingin menghapus Akun dari ${data['nama lengkap']}?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text('Tidak'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text('Hapus'),
+                                      onPressed: () {
+                                        document.reference.delete();
+                                        Navigator.pop(context);
+                                        Fluttertoast.showToast(
+                                            msg: "Data Berhasil Terhapus!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor: Colors.green,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
                       ),
                     ),
                   );
@@ -117,7 +169,6 @@ class DetailPetugasPage extends StatefulWidget {
   final String jenisKelamin;
   final String nik;
   final String noKk;
-  final String noKtp;
   final String ttl;
 
   const DetailPetugasPage(
@@ -133,7 +184,6 @@ class DetailPetugasPage extends StatefulWidget {
       required this.jenisKelamin,
       required this.nik,
       required this.noKk,
-      required this.noKtp,
       required this.ttl})
       : super(key: key);
 
@@ -159,227 +209,198 @@ class _DetailPetugasPageState extends State<DetailPetugasPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "UID",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.uid,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "UID",
+                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Flexible(child: Text(widget.uid, textAlign: TextAlign.end,)),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "Username",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.username,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
+              const Divider(thickness: 1,),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Username",
+                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Flexible(child: Text(widget.username, textAlign: TextAlign.end,)),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "Email",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.email,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
+              const Divider(thickness: 1,),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Email",
+                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Flexible(child: Text(widget.email, textAlign: TextAlign.end,)),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "Nama Lengkap",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.namaPetugas,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
+              const Divider(thickness: 1,),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Nama Lengkap",
+                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Flexible(child: Text(widget.namaPetugas, textAlign: TextAlign.end,)),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "Lokasi Kerja",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.lokasiKerja,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
+              const Divider(thickness: 1,),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Lokasi Kerja",
+                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Flexible(child: Text(widget.lokasiKerja, textAlign: TextAlign.end,)),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "Nomor HP",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.nomorHp,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
+              const Divider(thickness: 1,),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 8), 
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Nomor Handphone",
+                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Flexible(child: Text(widget.nomorHp, textAlign: TextAlign.end,)),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "Alamat",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.alamat,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
+              const Divider(thickness: 1,),
+              Container(
+               padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Alamat",
+                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Flexible(child: Text(widget.alamat, textAlign: TextAlign.end,)),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "Agama",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.agama,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
+              const Divider(thickness: 1,),
+              Container(
+               padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Agama",
+                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Flexible(child: Text(widget.agama, textAlign: TextAlign.end,)),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "Jenis Kelamin",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.jenisKelamin,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
+              const Divider(thickness: 1,),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 8), 
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Jenis Kelamin",
+                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Flexible(child: Text(widget.jenisKelamin, textAlign: TextAlign.end,)),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "NIK",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.nik,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
+              const Divider(thickness: 1,),
+              Container(
+               padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "NIK",
+                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Flexible(child: Text(widget.nik, textAlign: TextAlign.end,)),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "No. KK",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.noKk,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
+              const Divider(thickness: 1,),
+              Container(
+               padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "No. KK",
+                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Flexible(child: Text(widget.noKk, textAlign: TextAlign.end,)),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "Jenis Kelamin",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.noKtp,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
+              const Divider(thickness: 1,),
+              Container(
+               padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Tempat Tanggal Lahir",
+                       style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Flexible(child: Text(widget.ttl, textAlign: TextAlign.end,)),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              const Text(
-                "Tempat Tanggal Lahir",
-                style: TextStyle(color: kBlack54),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                widget.ttl,
-                style: const TextStyle(
-                  color: kBlack54,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
+              const Divider(thickness: 1,),
             ],
           ),
         ),

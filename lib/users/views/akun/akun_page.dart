@@ -21,7 +21,6 @@ class _AkunPageState extends State<AkunPage> {
   String? _nik;
   String? _phoneNumber;
   String? _workLocation;
-  String? _noKtp;
   String? _noKk;
   String? _gender;
   String? _religion;
@@ -103,7 +102,6 @@ class _AkunPageState extends State<AkunPage> {
                   nik: _nik.toString(),
                   phoneNumber: _phoneNumber.toString(),
                   workLocation: _workLocation.toString(),
-                  noKtp: _noKtp.toString(),
                   noKk: _noKk.toString(),
                   gender: _gender.toString(),
                   religion: _religion.toString(),
@@ -199,7 +197,6 @@ class _AkunPageState extends State<AkunPage> {
           _nik = result.docs[0].data()['nik'];
           _phoneNumber = result.docs[0].data()['nomor hp'];
           _workLocation = result.docs[0].data()['lokasi kerja'];
-          _noKtp = result.docs[0].data()['ktp'];
           _noKk = result.docs[0].data()['kk'];
           _gender = result.docs[0].data()['jenis kelamin'];
           _religion = result.docs[0].data()['agama'];

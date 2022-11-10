@@ -28,6 +28,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  // ignore: unused_field
   String? _uid;
   String? _name;
   String? _email;

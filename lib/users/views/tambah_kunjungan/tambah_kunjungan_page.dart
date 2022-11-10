@@ -509,6 +509,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
       if ((_imageURL == null) || (widget.location == "")) {
         alertDialogForm();
       } else {
+        showAlertDialogLoading(context);
         final docId = await FirebaseFirestore.instance
             .collection("users")
             .doc(uid)
@@ -548,11 +549,69 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
           'tanggal verifikasi': tanggalVerifikasi,
         });
 
-        Future.delayed(const Duration(seconds: 3), () {
-          Navigator.pushNamed(context, '/initialPage');
-        });
+        showAlertDialogSubmit();
       }
     }
+  }
+
+  showAlertDialogLoading(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      content: Row(
+        children: [
+          const CircularProgressIndicator(),
+          Container(
+              margin: const EdgeInsets.only(left: 15),
+              child: const Text(
+                "Loading...",
+                style: TextStyle(fontSize: 12),
+              )),
+        ],
+      ),
+    );
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogSubmit() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AlertDialog(
+                content: Column(
+                  children: [
+                    Image.asset(
+                      "assets/gif/success.gif",
+                      width: 60,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Text(
+                        "Data berhasil disimpan",
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                    ),                  ],
+                ),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/initialPage');
+                      },
+                      child: Text("Selesai"))
+                ],
+              ),
+            ],
+          );
+        });
   }
 
   alertDialogForm() {

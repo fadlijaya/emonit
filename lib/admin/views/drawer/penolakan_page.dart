@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emonit/users/theme/colors.dart';
 import 'package:emonit/users/utils/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 final Stream<QuerySnapshot> _streamPenolakan =
     FirebaseFirestore.instance.collection("penolakan").snapshots();
@@ -115,6 +116,60 @@ class _PenolakanPageState extends State<PenolakanPage> {
                       )
                     ],
                   ),
+                  trailing: PopupMenuButton(
+                        itemBuilder: (BuildContext context) {
+                          return <PopupMenuEntry<String>>[
+                            PopupMenuItem<String>(
+                              value: 'hapus',
+                              child: Row(
+                                children: const [
+                                  Icon(Icons.delete), 
+                                  Padding(padding: EdgeInsets.only(left: 4),
+                                  child: Text("Hapus"),
+                                )],
+                              ),
+                            )
+                          ];
+                        },
+                        onSelected: (String value) async {
+                          if (value == 'hapus') {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Konfirmasi'),
+                                  content: Text(
+                                      'Apa kamu ingin menghapus Akun dari ${data['nama mitra binaan']}?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text('Tidak'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text('Hapus'),
+                                      onPressed: () {
+                                        data.reference.delete();
+                                        Navigator.pop(context);
+                                        Fluttertoast.showToast(
+                                        msg: "Data Berhasil Terhapus!",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                      ),
                 ),
               );
             }).toList());

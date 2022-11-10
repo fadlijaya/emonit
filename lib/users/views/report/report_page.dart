@@ -17,11 +17,11 @@ class ReportPage extends StatefulWidget {
 
 class _ReportPageState extends State<ReportPage> {
   List<ModelKunjungan> data = [
-    ModelKunjungan('Jan', 7),
-    ModelKunjungan('Feb', 11),
-    ModelKunjungan('Mar', 0),
-    ModelKunjungan('Apr', 0),
-    ModelKunjungan('Mei', 0),
+    ModelKunjungan('Agu', 7),
+    ModelKunjungan('Sep', 11),
+    ModelKunjungan('Okt', 4),
+    ModelKunjungan('Nov', 0),
+    ModelKunjungan('Des', 0),
   ];
 
   @override

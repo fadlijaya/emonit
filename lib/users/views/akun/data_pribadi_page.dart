@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emonit/users/theme/colors.dart';
 import 'package:emonit/users/utils/constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
 class DataPribadiPage extends StatefulWidget {
   final String uid;
@@ -11,7 +13,6 @@ class DataPribadiPage extends StatefulWidget {
   final String nik;
   final String phoneNumber;
   final String workLocation;
-  final String noKtp;
   final String noKk;
   final String gender;
   final String religion;
@@ -28,7 +29,6 @@ class DataPribadiPage extends StatefulWidget {
     required this.nik,
     required this.phoneNumber,
     required this.workLocation,
-    required this.noKtp,
     required this.noKk,
     required this.gender,
     required this.religion,
@@ -51,12 +51,21 @@ class _DataPribadiPageState extends State<DataPribadiPage> {
   final TextEditingController _controllerNik = TextEditingController();
   final TextEditingController _controllerPhoneNumber = TextEditingController();
   final TextEditingController _controllerWorkLocation = TextEditingController();
-  final TextEditingController _controllerNoKtp = TextEditingController();
   final TextEditingController _controllerNoKk = TextEditingController();
-  final TextEditingController _controllerGender = TextEditingController();
-  final TextEditingController _controllerReligion = TextEditingController();
-  final TextEditingController _controllerPlaceBirth = TextEditingController();
   final TextEditingController _controllerAddress = TextEditingController();
+
+  String _jekel = "";
+  String? _selectedAgama;
+  String? dateTime = "";
+  String? saveDt;
+
+  final List<Map> _listAgama = [
+    {'id': 1, 'agama': 'Islam'},
+    {'id': 2, 'agama': 'Kristen'},
+    {'id': 3, 'agama': 'Protestan'},
+    {'id': 4, 'agama': 'Hindu'},
+    {'id': 5, 'agama': 'Buddha'}
+  ];
 
   @override
   void initState() {
@@ -68,11 +77,9 @@ class _DataPribadiPageState extends State<DataPribadiPage> {
         _controllerNik.text = widget.nik;
         _controllerPhoneNumber.text = widget.phoneNumber;
         _controllerWorkLocation.text = widget.workLocation;
-        _controllerNoKtp.text = widget.noKtp;
         _controllerNoKk.text = widget.noKk;
-        _controllerGender.text = widget.gender;
-        _controllerReligion.text = widget.religion;
-        _controllerPlaceBirth.text = widget.placeBirth;
+        _jekel = widget.gender;
+        dateTime = widget.placeBirth;
         _controllerAddress.text = widget.address;
       });
     }
@@ -110,6 +117,7 @@ class _DataPribadiPageState extends State<DataPribadiPage> {
     return Form(
       key: _formKey,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: const [
@@ -188,11 +196,18 @@ class _DataPribadiPageState extends State<DataPribadiPage> {
             cursorColor: kRed,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.number,
+            maxLength: 16,
             decoration: const InputDecoration(
                 hintStyle: TextStyle(color: kRed),
                 focusedBorder:
                     UnderlineInputBorder(borderSide: BorderSide(color: kRed)),
                 hintText: ''),
+            validator: (value) {
+              if (value!.length < 16) {
+                return "NIK Anda Salah!";
+              }
+              return null;
+            },
           ),
           const SizedBox(
             height: 12,
@@ -210,6 +225,7 @@ class _DataPribadiPageState extends State<DataPribadiPage> {
             cursorColor: kRed,
             keyboardType: TextInputType.phone,
             textInputAction: TextInputAction.next,
+            maxLength: 13,
             decoration: const InputDecoration(
                 hintStyle: TextStyle(color: kRed),
                 focusedBorder:
@@ -243,28 +259,6 @@ class _DataPribadiPageState extends State<DataPribadiPage> {
           Row(
             children: const [
               Text(
-                "No. KTP",
-                style: TextStyle(color: kGrey),
-              ),
-            ],
-          ),
-          TextFormField(
-            controller: _controllerNoKtp,
-            cursorColor: kRed,
-            textInputAction: TextInputAction.next,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-                hintStyle: TextStyle(color: kRed),
-                focusedBorder:
-                    UnderlineInputBorder(borderSide: BorderSide(color: kRed)),
-                hintText: ''),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          Row(
-            children: const [
-              Text(
                 "No. KK",
                 style: TextStyle(color: kGrey),
               ),
@@ -275,6 +269,7 @@ class _DataPribadiPageState extends State<DataPribadiPage> {
             cursorColor: kRed,
             textInputAction: TextInputAction.next,
             keyboardType: TextInputType.number,
+            maxLength: 16,
             decoration: const InputDecoration(
                 hintStyle: TextStyle(color: kRed),
                 focusedBorder:
@@ -284,65 +279,121 @@ class _DataPribadiPageState extends State<DataPribadiPage> {
           const SizedBox(
             height: 12,
           ),
+          const Text(
+            "Jenis Kelamin",
+            style: TextStyle(color: kGrey),
+          ),
           Row(
-            children: const [
-              Text(
-                "Jenis Kelamin",
-                style: TextStyle(color: kGrey),
+            children: [
+              Radio(
+                  activeColor: kGreen,
+                  value: "Pria",
+                  groupValue: _jekel,
+                  onChanged: (String? value) {
+                    setState(() {
+                      _jekel = value!;
+                    });
+                  }),
+              const Text(
+                "Pria",
+                style: TextStyle(fontSize: 12),
+              ),
+              const SizedBox(
+                width: 24,
+              ),
+              Radio(
+                  activeColor: kGreen,
+                  value: "Wanita",
+                  groupValue: _jekel,
+                  onChanged: (String? value) {
+                    setState(() {
+                      _jekel = value!;
+                    });
+                  }),
+              const Text(
+                "Wanita",
+                style: TextStyle(fontSize: 12),
               ),
             ],
-          ),
-          TextFormField(
-            controller: _controllerGender,
-            cursorColor: kRed,
-            textInputAction: TextInputAction.next,
-            decoration: const InputDecoration(
-                hintStyle: TextStyle(color: kRed),
-                focusedBorder:
-                    UnderlineInputBorder(borderSide: BorderSide(color: kRed)),
-                hintText: ''),
           ),
           const SizedBox(
             height: 12,
           ),
-          Row(
-            children: const [
-              Text(
-                "Agama",
-                style: TextStyle(color: kGrey),
-              ),
-            ],
+          const Text(
+            "Agama",
+            style: TextStyle(color: kGrey),
           ),
-          TextFormField(
-            controller: _controllerReligion,
-            cursorColor: kRed,
-            textInputAction: TextInputAction.next,
-            decoration: const InputDecoration(
-                hintStyle: TextStyle(color: kRed),
-                focusedBorder:
-                    UnderlineInputBorder(borderSide: BorderSide(color: kRed)),
-                hintText: ''),
+          SizedBox(
+            child: DropdownButton(
+              items: _listAgama
+                  .map((value) => DropdownMenuItem(
+                        child: Text(
+                          value['agama'],
+                        ),
+                        value: value['agama'].toString(),
+                      ))
+                  .toList(),
+              onChanged: (selected) {
+                setState(() {
+                  _selectedAgama = selected as String;
+                });
+              },
+              value: _selectedAgama,
+              isExpanded: true,
+              hint: widget.religion == ""
+              ? const Text(
+                'Pilih Agama', style: TextStyle(fontSize: 14),
+              )
+              : Text("${widget.religion}")
+            ),
           ),
           const SizedBox(
             height: 12,
           ),
-          Row(
-            children: const [
-              Text(
-                "Tempat Tanggal Lahir",
-                style: TextStyle(color: kGrey),
-              ),
-            ],
+          const Text(
+            "Tanggal Lahir",
+            style: TextStyle(color: kGrey),
           ),
-          TextFormField(
-            controller: _controllerPlaceBirth,
-            cursorColor: kRed,
-            textInputAction: TextInputAction.next,
-            decoration: const InputDecoration(
-                hintStyle: TextStyle(color: kRed),
-                focusedBorder:
-                    UnderlineInputBorder(borderSide: BorderSide(color: kRed)),
-                hintText: ''),
+          Container(
+            margin: const EdgeInsets.only(top: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton.icon(
+                  onPressed: () {
+                    DatePicker.showDatePicker(context,
+                        showTitleActions: true,
+                        minTime: DateTime(1990, 6, 7),
+                        maxTime: DateTime(2030, 6, 7), onChanged: (date) {
+                      print('change $date in time zone ' +
+                          date.timeZoneOffset.inHours.toString());
+                    }, onConfirm: (date) {
+                      print('confirm $date');
+                      String dtFormat = DateFormat('yyyy-MM-dd').format(date);
+                      print(saveDt);
+                      String dt = DateFormat('dd MMMM yyyy').format(date);
+                      setState(() {
+                        saveDt = dtFormat;
+                        dateTime = dt;
+                      });
+                    }, locale: LocaleType.id);
+                  },
+                  icon: const Icon(  
+                    Icons.calendar_month, color: kBlack54,
+                  ),
+                  label: const Text(
+                    "Tanggal lahir",
+                    style: TextStyle(fontSize: 12, color: kBlack54),
+                  ),
+                ),
+                dateTime == null
+                    ? const Text("")
+                    : Text(
+                        '$dateTime',
+                        style: const TextStyle(fontSize: 14),
+                      ),
+              ],
+            ),
           ),
           const SizedBox(
             height: 12,
@@ -404,11 +455,10 @@ class _DataPribadiPageState extends State<DataPribadiPage> {
             'nik': _controllerNik.text,
             'nomor hp': _controllerPhoneNumber.text,
             'lokasi kerja': _controllerWorkLocation.text,
-            'ktp': _controllerNoKtp.text,
             'kk': _controllerNoKk.text,
-            'jenis kelamin': _controllerGender.text,
-            'agama': _controllerReligion.text,
-            'tempat tanggal lahir': _controllerPlaceBirth.text,
+            'jenis kelamin': _jekel,
+            'agama': _selectedAgama.toString(),
+            'tempat tanggal lahir': dateTime.toString(),
             'alamat': _controllerAddress.text
           });
         }
@@ -416,10 +466,6 @@ class _DataPribadiPageState extends State<DataPribadiPage> {
 
       infoUpdate();
     }
-
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pop(context);
-    });
   }
 
   infoUpdate() {
@@ -432,10 +478,14 @@ class _DataPribadiPageState extends State<DataPribadiPage> {
               children: const [
                 Text(
                   "Data Berhasil di Update",
-                  style: TextStyle(color: kBlack54),
                 ),
               ],
             ),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.pushNamed(context, '/initialPage'),
+                  child: Text("Tutup"))
+            ],
           );
         });
   }
