@@ -112,8 +112,8 @@ class _CategoryPageState extends State<CategoryPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => const TambahKunjunganPage(
-                                coordinate: GeoPoint(0.0, 0.0),
-                                location: "",
+                                //coordinate: GeoPoint(0.0, 0.0),
+                                //location: "",
                               ))),
                   child: Container(
                     height: 48,

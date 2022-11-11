@@ -10,14 +10,15 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
+import 'package:flutter_geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart';
 
 class TambahKunjunganPage extends StatefulWidget {
-  final GeoPoint coordinate;
-  final String location;
   const TambahKunjunganPage(
-      {Key? key, required this.coordinate, required this.location})
+      {Key? key,})
       : super(key: key);
 
   @override
@@ -47,21 +48,90 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
   String? _imageURL;
   String dateNow = DateFormat('dd-MM-yyyy - kk:mm').format(DateTime.now());
 
-  File? _file;
-  PlatformFile? _platformFile;
+  // ignore: prefer_typing_uninitialized_variables
+  var _imageFile;
+  //late AnimationController loadingController;
 
-  late AnimationController loadingController;
+  LocationData? _currentPosition;
+  String? _address, _dateTime;
+  late GoogleMapController mapController;
+  Marker? marker;
+  Location location = Location();
+
+  late GoogleMapController _controller;
+  LatLng _initialcameraposition = const LatLng(0.5937, 0.9629);
 
   @override
   void initState() {
     getUser();
-    loadingController = AnimationController(
+    getLoc();
+    /*loadingController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 10),
     )..addListener(() {
         setState(() {});
-      });
+      });*/
     super.initState();
+  }
+
+  /*_onMapCreated(GoogleMapController _cntlr) {
+    _controller = _cntlr;
+    location.onLocationChanged.listen((l) {
+      _controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 15),
+        ),
+      );
+    });
+  }*/
+
+  getLoc() async {
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    _currentPosition = await location.getLocation();
+    _initialcameraposition =
+        LatLng(_currentPosition!.latitude!, _currentPosition!.longitude!);
+    location.onLocationChanged.listen((LocationData currentLocation) {
+      if (!mounted) return;
+      setState(() {
+        _currentPosition = currentLocation;
+        _initialcameraposition =
+            LatLng(_currentPosition!.latitude!, _currentPosition!.longitude!);
+
+        DateTime now = DateTime.now();
+        _dateTime = DateFormat('EEE d MMM kk:mm:ss ').format(now);
+        _getAddress(_currentPosition!.latitude!, _currentPosition!.longitude!)
+            .then((value) {
+          setState(() {
+            _address = value.first.addressLine;
+          });
+        });
+      });
+    });
+  }
+
+  Future<List<Address>> _getAddress(double lat, double lang) async {
+    final coordinates = Coordinates(lat, lang);
+    List<Address> add =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    return add;
   }
 
   @override
@@ -122,7 +192,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
       key: _formKey,
       child: Column(
         children: [
-          GestureDetector(
+          /*GestureDetector(
             onTap: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const LokasiPage())),
             child: Row(
@@ -160,7 +230,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
                               widget.coordinate.longitude)))),
           const SizedBox(
             height: 16,
-          ),
+          ),*/
           Container(
             width: double.infinity,
             height: 48,
@@ -316,7 +386,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(
-                      Icons.folder_open,
+                      Icons.photo_camera,
                       color: kRed,
                       size: 40,
                     ),
@@ -324,7 +394,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
                       height: 15,
                     ),
                     Text(
-                      'Pilih File',
+                      'Ambil Gambar',
                       style:
                           TextStyle(fontSize: 15, color: Colors.grey.shade400),
                     ),
@@ -336,92 +406,40 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
           const SizedBox(
             height: 12,
           ),
-          _platformFile != null
-              ? Container(
-                  padding: const EdgeInsets.all(paddingDefault),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Selected File',
-                        style: TextStyle(
-                          color: Colors.grey.shade400,
-                          fontSize: 15,
-                        ),
+          _imageFile != null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.file(
+                          _imageFile,
+                          fit: BoxFit.cover,
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 0, 8),
+                      child: Text(
+                        "Date/Time: $_dateTime",
+                        style: const TextStyle(fontSize: 12, color: kBlack54),
                       ),
-                      const SizedBox(
-                        height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 0, 8),
+                      child: Text(
+                        "Latitude: ${_currentPosition?.latitude}, Longitude: ${_currentPosition?.longitude}",
+                        style: const TextStyle(color: kBlack54),
                       ),
-                      Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade200,
-                                  offset: const Offset(0, 1),
-                                  blurRadius: 3,
-                                  spreadRadius: 2,
-                                )
-                              ]),
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.file(
-                                    _file!,
-                                    width: 70,
-                                  )),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      _platformFile!.name,
-                                      style: const TextStyle(
-                                          fontSize: 13, color: Colors.black),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      '${(_platformFile!.size / 1024).ceil()} KB',
-                                      style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey.shade500),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
-                                        height: 5,
-                                        clipBehavior: Clip.hardEdge,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          color: Colors.blue.shade50,
-                                        ),
-                                        child: LinearProgressIndicator(
-                                          value: loadingController.value,
-                                        )),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                            ],
-                          )),
-                      const SizedBox(
-                        height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 0, 8),
+                      child: Text(
+                        "$_address",
+                        style: const TextStyle(),
                       ),
-                    ],
-                  ))
-              : Container(),
+                    ),
+                  ],
+                )
+              : Container()
         ],
       ),
     );
@@ -463,27 +481,33 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
   }
 
   Future selectImage() async {
-    final image = await FilePicker.platform.pickFiles(
-        type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
+    final ImagePicker imagePicker = ImagePicker();
+    PickedFile image;
+
+    // ignore: deprecated_member_use
+    image = (await imagePicker.getImage(source: ImageSource.camera))!;
+
+    //final imagePlatform = await FilePicker.platform.pickFiles(
+    //    type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
 
     if (image != null) {
       setState(() {
-        _file = File(image.files.single.path!);
-        _platformFile = image.files.first;
+        _imageFile = File(image.path);
+        //_platformFile = imagePlatform!.files.first;
         uploadImageToFirebase();
       });
     }
 
-    loadingController.forward();
+    //loadingController.forward();
   }
 
   Future uploadImageToFirebase() async {
-    File file = File(_file!.path);
+    File file = File(_imageFile.path);
 
-    if (_file != null) {
+    if (_imageFile != null) {
       firebase_storage.TaskSnapshot snapshot = await firebase_storage
           .FirebaseStorage.instance
-          .ref('$_file')
+          .ref('$_imageFile')
           .putFile(file);
 
       var downloadUrl = await snapshot.ref.getDownloadURL();
@@ -496,9 +520,8 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
   Set<Marker> createMarker() {
     return <Marker>{
       Marker(
-        markerId: MarkerId(widget.coordinate.toString()),
-        position:
-            LatLng(widget.coordinate.latitude, widget.coordinate.longitude),
+        markerId: MarkerId(_currentPosition.toString()),
+        position: LatLng(_currentPosition!.latitude!, _currentPosition!.longitude!),
         icon: BitmapDescriptor.defaultMarker,
       )
     };
@@ -506,7 +529,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
 
   Future<dynamic> kunjungan() async {
     if (_formKey.currentState!.validate()) {
-      if ((_imageURL == null) || (widget.location == "")) {
+      if ((_imageURL == null) || (_address.toString() == "")) {
         alertDialogForm();
       } else {
         showAlertDialogLoading(context);
@@ -515,9 +538,8 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
             .doc(uid)
             .collection("kunjungan")
             .add({
-          'nama lokasi': widget.location,
-          'koordinat lokasi':
-              GeoPoint(widget.coordinate.latitude, widget.coordinate.longitude),
+          'nama lokasi': _address.toString(),
+          'koordinat lokasi': GeoPoint(_currentPosition!.latitude!, _currentPosition!.longitude!),
           'nama mitra binaan': _controllerNamaMB.text,
           'kode mitra binaan': _controllerKodeMB.text,
           'nomor HP': _controllerNomorHp.text,
@@ -535,9 +557,8 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
             .set({
           'docId': docId.id,
           'uid': uid,
-          'nama lokasi': widget.location,
-          'koordinat lokasi':
-              GeoPoint(widget.coordinate.latitude, widget.coordinate.longitude),
+          'nama lokasi': _address.toString(),
+          'koordinat lokasi': GeoPoint(_currentPosition!.latitude!, _currentPosition!.longitude!),
           'nama mitra binaan': _controllerNamaMB.text,
           'kode mitra binaan': _controllerKodeMB.text,
           'nomor HP': _controllerNomorHp.text,
@@ -562,7 +583,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
           Container(
               margin: const EdgeInsets.only(left: 15),
               child: const Text(
-                "Loading...",
+                "Mengirim data..",
                 style: TextStyle(fontSize: 12),
               )),
         ],
@@ -597,9 +618,11 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
                       padding: EdgeInsets.only(top: 8),
                       child: Text(
                         "Data berhasil disimpan",
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w600),
                       ),
-                    ),                  ],
+                    ),
+                  ],
                 ),
                 actions: [
                   TextButton(

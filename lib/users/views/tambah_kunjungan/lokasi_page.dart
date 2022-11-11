@@ -134,7 +134,9 @@ class _LokasiPageState extends State<LokasiPage> {
 
   Widget buttonSetLokasi() {
     return ElevatedButton(
-        onPressed: () => Navigator.pushAndRemoveUntil(
+        onPressed: () {
+          /*
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
                 builder: (context) => TambahKunjunganPage(
@@ -143,6 +145,8 @@ class _LokasiPageState extends State<LokasiPage> {
                       location: _address.toString(),
                     )),
             (route) => false),
+          */
+        },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(kRed),
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
