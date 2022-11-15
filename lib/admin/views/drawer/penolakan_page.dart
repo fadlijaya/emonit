@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 final Stream<QuerySnapshot> _streamPenolakan =
-    FirebaseFirestore.instance.collection("penolakan").snapshots();
+    FirebaseFirestore.instance.collection("penolakan").orderBy("tanggal kunjungan", descending: true).snapshots();
 
 class PenolakanPage extends StatefulWidget {
   const PenolakanPage({Key? key}) : super(key: key);

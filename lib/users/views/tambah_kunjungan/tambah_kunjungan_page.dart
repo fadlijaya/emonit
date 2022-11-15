@@ -268,11 +268,15 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
               controller: _controllerKodeMB,
               cursorColor: kRed,
               textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.number,
+              maxLength: 6,
               decoration: const InputDecoration.collapsed(
                   hintText: 'Kode Mitra Binaan'),
               validator: (value) {
                 if (value!.isEmpty) {
                   return "Masukkan Kode Mitra Binaan";
+                } else if (value.length < 6) {
+                  return "Kode Mitra Binaan Salah";
                 }
                 return null;
               },
@@ -293,6 +297,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
               controller: _controllerNomorHp,
               cursorColor: kRed,
               keyboardType: TextInputType.phone,
+              maxLength: 13,
               textInputAction: TextInputAction.next,
               decoration: const InputDecoration.collapsed(hintText: 'Nomor HP'),
               validator: (value) {

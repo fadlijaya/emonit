@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 final Stream<QuerySnapshot> _streamTerverifikasi =
-    FirebaseFirestore.instance.collection("terverifikasi").snapshots();
+    FirebaseFirestore.instance.collection("terverifikasi").orderBy("tanggal kunjungan", descending: true).snapshots();
 
 class VerifikasiPage extends StatefulWidget {
   const VerifikasiPage({Key? key}) : super(key: key);

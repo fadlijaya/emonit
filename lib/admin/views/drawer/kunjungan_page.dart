@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 final Stream<QuerySnapshot> _streamKunjungan =
-    FirebaseFirestore.instance.collection("kunjungan").snapshots();
+    FirebaseFirestore.instance.collection("kunjungan").orderBy("tanggal kunjungan", descending: true).snapshots();
 
 class KunjunganPage extends StatefulWidget {
   const KunjunganPage({Key? key}) : super(key: key);
@@ -191,6 +191,10 @@ class _KunjunganPageState extends State<KunjunganPage> {
                                   child: Text('Hapus'),
                                   onPressed: () {
                                     data.reference.delete();
+                                     FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(data['uid'])
+                                        .collection("kunjungan").doc(data['docId']).delete();
                                     Navigator.pop(context);
                                     Fluttertoast.showToast(
                                         msg: "Data Berhasil Terhapus!",
