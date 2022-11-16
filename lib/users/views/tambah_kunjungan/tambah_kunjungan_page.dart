@@ -45,6 +45,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
   final String tanggalVerifikasi = "";
 
   String? uid;
+  String? namaPetugas;
   String? _imageURL;
   String dateNow = DateFormat('dd-MM-yyyy - kk:mm').format(DateTime.now());
 
@@ -129,8 +130,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
 
   Future<List<Address>> _getAddress(double lat, double lang) async {
     final coordinates = Coordinates(lat, lang);
-    List<Address> add =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    List<Address> add = await Geocoder.local.findAddressesFromCoordinates(coordinates);
     return add;
   }
 
@@ -480,6 +480,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
       if (result.docs.isNotEmpty) {
         setState(() {
           uid = result.docs[0].data()['uid'];
+          namaPetugas = result.docs[0].data()['nama lengkap'];
         });
       }
     });
@@ -554,6 +555,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
           'tanggal kunjungan': dateNow,
           'status verifikasi': statusVerifikasi,
           'tanggal verifikasi': tanggalVerifikasi,
+          'nama petugas': namaPetugas.toString()
         });
 
         await FirebaseFirestore.instance
@@ -573,6 +575,7 @@ class _TambahKunjunganPageState extends State<TambahKunjunganPage>
           'tanggal kunjungan': dateNow,
           'status verifikasi': statusVerifikasi,
           'tanggal verifikasi': tanggalVerifikasi,
+          'nama petugas': namaPetugas.toString()
         });
 
         showAlertDialogSubmit();
